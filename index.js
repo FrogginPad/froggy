@@ -75,3 +75,8 @@ process.on('unhandledRejection', async (err, promise) => {
 rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), { body: [] })
 	.then(() => console.log('Successfully deleted all guild commands.'))
 	.catch(console.error);
+
+// Eh
+setInterval(() => {
+  console.log("Health Check");
+ }, 600000);
