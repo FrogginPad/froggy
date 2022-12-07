@@ -1,9 +1,11 @@
-const { Client, Partials, Collection, GatewayIntentBits } = require('discord.js');
+const { REST, Routes, Client, Partials, Collection, GatewayIntentBits } = require('discord.js');
 const config = require('./config/config');
 const colors = require("colors");
 require('dotenv').config();
 
 const TOKEN = process.env.TOKEN;
+
+const rest = new REST({ version: '10' }).setToken(TOKEN);
 
 // Creating a new client:
 const client = new Client({
@@ -68,3 +70,8 @@ process.on('unhandledRejection', async (err, promise) => {
   console.error(`[ANTI-CRASH] Unhandled Rejection: ${err}`.red);
   console.error(promise);
 });
+
+// for global commands
+rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), { body: [] })
+	.then(() => console.log('Successfully deleted all guild commands.'))
+	.catch(console.error);
