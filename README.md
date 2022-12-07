@@ -14,6 +14,8 @@ Discord.js Documentation is linked [here](https://discord.js.org/#/docs/discord.
 
 ## How to setup
 
+More info can be found in the [docs](https://github.com/ryelo/froggy/tree/main/docs)
+
 ### - Requirements
 
 • **Node.js v16.9.0 or above.** <a href="https://nodejs.org/en/"><img src="https://img.shields.io/badge/v16.9.0-100000?style=flat&logo=node.js&label=Node.js&color=blue&logoColor=lime"></a><br>
