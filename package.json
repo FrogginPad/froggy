@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "A Discord Bot",
   "main": "index.js",
+  "engines": {
+    "node": ">=16.9.0"
+  },
   "scripts": {
     "start": "node index.js"
   },
@@ -22,6 +25,7 @@
     "node-fetch": "^2.6.7",
     "pretty-ms": "^6.0.1",
     "quick.db": "^9.0.5",
+    "sqlite3": "^5.1.2",
     "super-djs": "^1.7.4"
   },
   "repository": {
