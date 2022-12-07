@@ -1,8 +1,11 @@
 {
-  "name": "discordjs-v14-bot-template",
-  "version": "14.0.0",
+  "name": "froggy",
+  "version": "0.0.1",
   "description": "A Discord Bot",
   "main": "index.js",
+  "engines": {
+    "node": ">=16.9.0"
+  },
   "scripts": {
     "start": "node index.js"
   },
@@ -26,10 +29,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TFAGaming/DiscordJS-V14-Bot-Template.git"
+    "url": "git@github.com:ryelo/froggy.git"
   },
   "bugs": {
-    "url": "https://github.com/TFAGaming/DiscordJS-V14-Bot-Template/issues"
+    "url": "https://github.com/ryelo/froggy/issues"
   },
-  "homepage": "https://github.com/TFAGaming/DiscordJS-V14-Bot-Template#readme"
+  "homepage": "https://github.com/ryelo/froggy/blob/main/README.md"
 }
