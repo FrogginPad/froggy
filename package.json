@@ -4,7 +4,7 @@
   "description": "A Discord Bot",
   "main": "index.js",
   "engines": {
-    "node": ">=16.9.0"
+    "node" : ">=16.9.0 <17.0.0"
   },
   "scripts": {
     "start": "node index.js"
