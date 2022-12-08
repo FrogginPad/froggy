@@ -27,7 +27,7 @@ module.exports = {
     return interaction.reply({
       embeds: [
           new EmbedBuilder()
-              .setDescription("Ranks reset")
+              .setDescription("Your rank has been reset")
               .setColor('Green')
       ],
       ephemeral: true
