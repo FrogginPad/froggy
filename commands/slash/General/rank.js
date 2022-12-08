@@ -1,7 +1,5 @@
 const { EmbedBuilder, ButtonStyle, ActionRowBuilder, StringSelectMenuBuilder, SlashCommandBuilder, CommandInteraction, PermissionFlagsBits } = require('discord.js');
 
-// TODO assign roles based on ranks
-
 const ranks = [
     'immortal',
     'ascendant',
