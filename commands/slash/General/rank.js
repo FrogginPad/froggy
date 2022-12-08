@@ -23,25 +23,19 @@ module.exports = {
     },
     run: async (client, interaction, config, db) => {
 
-        let distributedRanks = [];
-        let n = 3;
-        let base = 0;
-        const createRanks = ranks.map(rank => {
-            while(n > base) {
-                distributedRanks.push(
-                    {
-                        label: `${rank} ${n}`,
-                        value: `${rank}${n}`
-                    }
-                )
-                n--;
-            }
-            n=3;
+        let formattedRanks = [];
+        ranks.map(rank => {
+            formattedRanks.push(
+                {
+                    label: `${rank}`,
+                    value: `${rank}`
+                }
+            )
         });
 
         const verifyEmbed = new EmbedBuilder()
-        .setTitle('Rank')
-        .setDescription('Set rank')
+        .setTitle('Select your rank')
+        .setDescription('You should receive a role based on your selection')
         .setColor('Green')
 
         return interaction.reply({
@@ -52,7 +46,9 @@ module.exports = {
                 new StringSelectMenuBuilder()
                 .setCustomId('select')
                 .setPlaceholder('Nothing selected')
-                .addOptions(distributedRanks),
+                .addOptions(formattedRanks)
+                .setMinValues(1)
+                .setMaxValues(1)
               )
             ],
             ephemeral: true

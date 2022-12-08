@@ -70,6 +70,34 @@ client.on("interactionCreate", async (interaction) => {
     }
   }
 
+  if (interaction.isStringSelectMenu()) {
+
+    const roleIDs = {
+      'immortal': '1050440241783250944',
+      'ascendant': '1050454583677304832',
+      'diamond': '1050440163098120263',
+      'platinum': '1050440077433655407',
+      'gold': '1050440038665699328',
+      'silver': '1050439366637539348',
+      'bronze': '1050439271640739881',
+      'iron': '1050439366637539348'
+    };
+
+    const input = interaction.values[0];
+
+    const usersRankID = roleIDs[input];
+    const role = interaction.guild.roles.cache.get(usersRankID);
+
+    await interaction.member.roles
+    .add(role)
+    .then((member) =>
+      interaction.reply({
+        content: `you have ${input} role`,
+        ephemeral: true
+      })
+    )
+  }
+
   if (interaction.isButton()) {
     const role = interaction.guild.roles.cache.get("1049082583813738696");
     return interaction.member.roles
@@ -83,4 +111,5 @@ client.on("interactionCreate", async (interaction) => {
   } else {
     return;
   }
+
 });
