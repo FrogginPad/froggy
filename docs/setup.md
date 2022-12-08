@@ -17,7 +17,7 @@
     }
     ```
 
-6. Go to `.env.example` and change all the values
+6. Go to `.env.example` and change all the values and rename to `.env`
 
     ```js
     TOKEN= // Bot token
