@@ -1,9 +1,19 @@
 const { EmbedBuilder } = require("discord.js");
-import { maps } from './maps.js';
+
+const maps = Array(
+    'Ascent',
+    'Breeze',
+    'Bind',
+    'Fracture',
+    'Haven',
+    'Icebox',
+    'Pearl',
+    'Split'
+);
 
 module.exports = {
     name: "randommap",
-    description: "Random map pick",
+    description: "Random map picker",
     type: 1,
     options: [],
     permissions: {
