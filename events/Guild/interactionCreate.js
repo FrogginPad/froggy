@@ -9,6 +9,9 @@ module.exports = {
 };
 
 client.on("interactionCreate", async (interaction) => {
+
+  console.log(`[LOG] ${interaction.commandName} by ${interaction.user.username}`);
+
   if (interaction.isChatInputCommand()) {
     const command = client.slash_commands.get(interaction.commandName);
 
