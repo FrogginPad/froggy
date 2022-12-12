@@ -27,5 +27,29 @@
     MONGO= // Mongo DB token if needed
     ```
 
-7. Type in the terminal: `yarn install`
-8. Type in the terminal: `yarn start`
+7. Go to `config/guild.example.js` and change all the values and rename to `guild.js` (keep file inside `config` directory)
+
+    ```js
+    module.exports = {
+      Channels: {
+        welcome: '' // #WELCOME in template
+      },
+
+      Roles: {
+        Ranks: {
+          immortal: '',
+          ascendant: '',
+          diamond: '',
+          platinum: '',
+          gold: '',
+          silver: '',
+          bronze: '',
+          iron: ''
+        },
+        verified: '' // Verified role, @frog in template
+      }
+    }
+    ```
+
+8. Type in the terminal: `yarn install`
+9. Type in the terminal: `yarn start`

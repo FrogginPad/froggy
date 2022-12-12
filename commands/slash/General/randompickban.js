@@ -1,74 +1,68 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder } = require('discord.js');
+const consts = require('../../consts/consts');
 
-function getRandomMap() {
-    let randomMap = maps[Math.floor(Math.random() * maps.length)];
-    maps = maps.filter(map => map !== randomMap );
-    return randomMap;
+
+function getRandomMap(maps) {
+  const randomMap = maps[Math.floor(Math.random() * maps.length)];
+  return randomMap;
 }
 
 function getRandomSide() {
-    return Math.random() >= 0.5 ? "Attack" : "Defense";
+  return Math.random() >= 0.5 ? 'Attack' : 'Defense';
 }
-
-function createMapArray() {
-    maps = Array(
-        'Ascent',
-        'Breeze',
-        'Bind',
-        'Fracture',
-        'Haven',
-        'Icebox',
-        'Pearl',
-        'Split'
-    );
-}
-createMapArray();
 
 module.exports = {
-    name: "randompickban",
-    description: "Randomized pick/bans phases for a BO3",
-    type: 1,
-    options: [],
-    permissions: {
-        DEFAULT_MEMBER_PERMISSIONS: "SendMessages"
-    },
-    run: async (client, interaction, config, db) => {
-        let banOne = getRandomMap();
-        let banTwo = getRandomMap();
-        let banThree = getRandomMap();
-        let banFour = getRandomMap();
-        let pickOne = getRandomMap();
-        let pickTwo = getRandomMap();
-        let pickThree = getRandomMap();
-        let sideOne = getRandomSide();
-        let sideTwo = getRandomSide();
-        let sideThree = getRandomSide();
-        
-        //resetting map list
-        createMapArray();
+  name: 'randompickban',
+  description: 'Randomized pick/bans phases for a BO3',
+  type: 1,
+  options: [],
+  permissions: {
+    DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
+  },
+  run: async (client, interaction, config, db) => {
+    let editableMaps = consts.MAPS;
+    const teams = 2;
+    const rounds = 3;
+    const game = {
+      maps: [],
+      sides: [],
+    };
 
-        return interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                .setDescription(`
-                    Team A bans: ${banOne}
-                    Team B bans: ${banTwo}
+    // pick sides, doesn't really need to do after map because it's random and doesn't use maps array
+    [...Array(rounds).keys()].map((i) => game.sides.push(getRandomSide()));
 
-                    **Team A picks: ${pickOne}**
-                    **Team B starts on ${sideOne}**
+    // get 7 maps
+    [...Array(teams * rounds + 1).keys()].map((i) => {
+      const selection = getRandomMap(editableMaps);
+      game.maps.push(selection);
+      editableMaps = editableMaps.filter((map) => map !== selection);
+    });
 
-                    **Team B picks: ${pickTwo}**
-                    **Team A starts on ${sideTwo}**
+    return interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setDescription(`
+                    === Round 1 ===
+                    Team A bans: ${game.maps[0]}
+                    Team B bans: ${game.maps[1]}
 
-                    Team A bans: ${banThree}
-                    Team B bans: ${banFour}
+                    **Team A picks: ${game.maps[2]}**
+                    **Team B starts on ${game.sides[0]}**
 
-                    **Decider map: ${pickThree}**
-                    **Team A starts on ${sideThree}**
+                    === Round 2 ===
+                    **Team B picks: ${game.maps[3]}**
+                    **Team A starts on ${game.sides[1]}**
+
+                    === Decider ===
+                    Team A bans: ${game.maps[4]}
+                    Team B bans: ${game.maps[5]}
+
+                    **Decider map: ${game.maps[6]}**
+                    **Team A starts on ${game.sides[2]}**
                 `)
-                .setColor('Green')
-            ],
-            ephemeral: false
-        })
-    },
+          .setColor('Green'),
+      ],
+      ephemeral: false,
+    });
+  },
 };

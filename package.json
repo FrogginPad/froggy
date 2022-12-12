@@ -4,10 +4,12 @@
   "description": "A Discord Bot",
   "main": "index.js",
   "engines": {
-    "node" : ">=16.9.0 <17.0.0"
+    "node": ">=16.9.0 <17.0.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "keywords": [],
   "author": "ryelo",
@@ -35,5 +37,10 @@
   "bugs": {
     "url": "https://github.com/ryelo/froggy/issues"
   },
-  "homepage": "https://github.com/ryelo/froggy/blob/main/README.md"
+  "homepage": "https://github.com/ryelo/froggy/blob/main/README.md",
+  "devDependencies": {
+    "eslint": "^8.29.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
+  }
 }

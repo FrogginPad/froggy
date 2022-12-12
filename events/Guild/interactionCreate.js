@@ -1,18 +1,18 @@
-const { EmbedBuilder } = require("discord.js");
-const client = require("../../index");
-const config = require("../../config/config.js");
-const { QuickDB } = require("quick.db");
+const { EmbedBuilder } = require('discord.js');
+const { QuickDB } = require('quick.db');
+const client = require('../../index');
+const config = require('../../config/config');
+const guild = require('../../config/guild');
+
 const db = new QuickDB();
 
 module.exports = {
-  name: "interactionCreate",
+  name: 'interactionCreate',
 };
 
-client.on("interactionCreate", async (interaction) => {
-
-  console.log(`[LOG] ${interaction.commandName} by ${interaction.user.username}`);
-
+client.on('interactionCreate', async (interaction) => {
   if (interaction.isChatInputCommand()) {
+    console.log(`[SLASH] ${interaction.commandName} by ${interaction.user.username}`);
     const command = client.slash_commands.get(interaction.commandName);
 
     if (!command) return;
@@ -25,7 +25,7 @@ client.on("interactionCreate", async (interaction) => {
   }
 
   if (interaction.isUserContextMenuCommand()) {
-    // User:
+    console.log(`[USER COMMAND] ${interaction.commandName} by ${interaction.user.username}`);
     const command = client.user_commands.get(interaction.commandName);
 
     if (!command) return;
@@ -38,7 +38,7 @@ client.on("interactionCreate", async (interaction) => {
   }
 
   if (interaction.isMessageContextMenuCommand()) {
-    // Message:
+    console.log(`[MESSAGE CONTEXT] ${interaction.commandName} by ${interaction.user.username}`);
     const command = client.message_commands.get(interaction.commandName);
 
     if (!command) return;
@@ -54,17 +54,18 @@ client.on("interactionCreate", async (interaction) => {
     // Modals:
     const modal = client.modals.get(interaction.customId);
 
-    if (!modal)
-      return interaction.reply({
+    if (!modal) {
+      interaction.reply({
         embeds: [
           new EmbedBuilder()
             .setDescription(
-              "Something went wrong... Probably the Modal ID is not defined in the modals handler."
+              'Something went wrong... Probably the Modal ID is not defined in the modals handler.',
             )
-            .setColor("Red"),
+            .setColor('Red'),
         ],
         ephemeral: true,
       });
+    }
 
     try {
       modal.run(client, interaction, config, db);
@@ -73,46 +74,38 @@ client.on("interactionCreate", async (interaction) => {
     }
   }
 
-  if (interaction.isStringSelectMenu()) {
-
-    const roleIDs = {
-      'immortal': '1050440241783250944',
-      'ascendant': '1050454583677304832',
-      'diamond': '1050440163098120263',
-      'platinum': '1050440077433655407',
-      'gold': '1050440038665699328',
-      'silver': '1050439366637539348',
-      'bronze': '1050439271640739881',
-      'iron': '1050439366637539348'
-    };
-
+  /* --- Selecting Rank ---
+     uses /rank to pick from a list of ranks
+  */
+  if (interaction.customId === 'select') {
     const input = interaction.values[0];
+    console.log(input);
 
-    const usersRankID = roleIDs[input];
+    const usersRankID = guild.Roles.Ranks[input];
     const role = interaction.guild.roles.cache.get(usersRankID);
 
     await interaction.member.roles
-    .add(role)
-    .then((member) =>
-      interaction.reply({
-        content: `you have ${input} role`,
-        ephemeral: true
-      })
-    )
-  }
-
-  if (interaction.isButton()) {
-    const role = interaction.guild.roles.cache.get("1049082583813738696");
-    return interaction.member.roles
       .add(role)
-      .then((member) =>
-        interaction.reply({
-          content: `you are now a ${role}`,
-          ephemeral: true
-        })
-      );
-  } else {
-    return;
+      .then((member) => interaction.reply({
+        content: `you now have the ${input} role`,
+        ephemeral: true,
+      }));
   }
 
+  /* --- Verifying membership ---
+     uses button in #welcome channel then assigns role
+  */
+  if (interaction.customId === 'verify') {
+    const role = interaction.guild.roles.cache.get(guild.Roles.verified);
+    if (role) {
+      interaction.member.roles
+        .add(role)
+        .then((member) => interaction.reply({
+          content: `you are now a ${role}`,
+          ephemeral: true,
+        })
+          .catch(console.log('[WARN] Role already assigned')));
+    }
+    console.error('There was an error getting the role');
+  }
 });
