@@ -1,15 +1,5 @@
 const { EmbedBuilder, ButtonStyle, ActionRowBuilder, StringSelectMenuBuilder, SlashCommandBuilder, CommandInteraction, PermissionFlagsBits } = require('discord.js');
-
-const ranks = [
-    'immortal',
-    'ascendant',
-    'diamond',
-    'platinum',
-    'gold',
-    'silver',
-    'bronze',
-    'iron'
-];
+const guild = require("../../../config/config.js");
 
 module.exports = {
     name: "rank",
@@ -19,10 +9,10 @@ module.exports = {
     permissions: {
         DEFAULT_MEMBER_PERMISSIONS: "SendMessages"
     },
-    run: async (client, interaction, config, db) => {
+    run: async (client, interaction, db) => {
 
         let formattedRanks = [];
-        ranks.map(rank => {
+        Object.keys(guild.Roles.Ranks).map(rank => {
             formattedRanks.push(
                 {
                     label: `${rank}`,
@@ -42,7 +32,7 @@ module.exports = {
               new ActionRowBuilder()
                 .addComponents(
                 new StringSelectMenuBuilder()
-                .setCustomId('select')
+                .setCustomId('rankSelect')
                 .setPlaceholder('Nothing selected')
                 .addOptions(formattedRanks)
                 .setMinValues(1)

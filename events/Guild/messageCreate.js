@@ -27,6 +27,7 @@ client.on('messageCreate', async (message) => {
   if (!command) return;
 
   if (command) {
+    console.log(`[PREFIX COMMAND] ${config.Prefix}${command.config.name} by ${message.author.username}`);
     if (command.permissions) {
       if (!message.member.permissions.has(PermissionsBitField.resolve(command.permissions || []))) return message.reply({
         embeds: [

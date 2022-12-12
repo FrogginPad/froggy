@@ -1,5 +1,6 @@
 const { REST, Routes, Client, Partials, Collection, GatewayIntentBits } = require('discord.js');
 const config = require('./config/config');
+const guild = require('./config/guild');
 const colors = require("colors");
 require('dotenv').config();
 

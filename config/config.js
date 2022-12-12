@@ -4,5 +4,5 @@ module.exports = {
 
   Users: {
     OWNERS: ["698150724638343238"] // THE BOT OWNERS ID.
-  },
+  }
 }

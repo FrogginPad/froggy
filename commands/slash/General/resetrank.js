@@ -1,15 +1,5 @@
 const { EmbedBuilder, ButtonStyle, ActionRowBuilder, ButtonBuilder, SlashCommandBuilder, CommandInteraction, PermissionFlagsBits } = require('discord.js');
-
-const roleIDs = {
-  'immortal': '1050440241783250944',
-  'ascendant': '1050454583677304832',
-  'diamond': '1050440163098120263',
-  'platinum': '1050440077433655407',
-  'gold': '1050440038665699328',
-  'silver': '1050439366637539348',
-  'bronze': '1050439271640739881',
-  'iron': '1050439366637539348'
-};
+const guild = require("../../../config/guild.js");
 
 module.exports = {
   name: 'resetrank',
@@ -19,10 +9,10 @@ module.exports = {
   permissions: {
     DEFAULT_MEMBER_PERMISSIONS: "SendMessages"
   },
-  run: async (client, interaction, config, db) => {
-    for(const rank in roleIDs) {
+  run: async (client, interaction, db) => {
+    for(const rank in guild.Roles.Ranks) {
       interaction.member.roles
-      .remove(roleIDs[rank])
+      .remove(guild.Roles.Ranks[rank])
     }
     return interaction.reply({
       embeds: [

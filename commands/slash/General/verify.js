@@ -1,7 +1,7 @@
 const { EmbedBuilder, ButtonStyle, ActionRowBuilder, ButtonBuilder, SlashCommandBuilder, CommandInteraction, PermissionFlagsBits } = require('discord.js');
+const guild = require("../../../config/guild.js");
 
 const VERIFICATION_MESSAGE = '💚 Enter the palace 💚';
-const WELCOME_CHANNEL_ID = '1049082735739805706';
 
 module.exports = {
   name: 'verify',
@@ -11,8 +11,8 @@ module.exports = {
   permissions: {
     DEFAULT_MEMBER_PERMISSIONS: PermissionFlagsBits.Administrator
   },
-  run: async (client, interaction, config, db) => {
-    const channel = client.channels.cache.get(WELCOME_CHANNEL_ID);
+  run: async (client, interaction, db) => {
+    const channel = client.channels.cache.get(guild.Channels.welcome);
     const verifyEmbed = new EmbedBuilder()
     .setTitle('Verification')
     .setDescription('Click the button to verify your account')
