@@ -79,7 +79,7 @@ client.on('interactionCreate', async (interaction) => {
   */
   if (interaction.customId === 'select') {
     const input = interaction.values[0];
-    console.log(input)
+    console.log(input);
 
     const usersRankID = guild.Roles.Ranks[input];
     const role = interaction.guild.roles.cache.get(usersRankID);

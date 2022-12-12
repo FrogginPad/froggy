@@ -1,7 +1,7 @@
 const {
   EmbedBuilder, ButtonStyle, ActionRowBuilder, StringSelectMenuBuilder, SlashCommandBuilder, CommandInteraction, PermissionFlagsBits,
 } = require('discord.js');
-const guild = require('../../../config/guild.js');
+const guild = require('../../../config/guild');
 
 module.exports = {
   name: 'rank',
@@ -13,14 +13,12 @@ module.exports = {
   },
   run: async (client, interaction, db) => {
     const formattedRanks = [];
-    Object.keys(guild.Roles.Ranks).map((rank) => {
-      formattedRanks.push(
-        {
-          label: `${rank}`,
-          value: `${rank}`,
-        },
-      );
-    });
+    Object.keys(guild.Roles.Ranks).map((rank) => formattedRanks.push(
+      {
+        label: `${rank}`,
+        value: `${rank}`,
+      },
+    ));
 
     const verifyEmbed = new EmbedBuilder()
       .setTitle('Select your rank')
