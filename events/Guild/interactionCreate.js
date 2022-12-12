@@ -1,16 +1,16 @@
-const { EmbedBuilder } = require("discord.js");
-const client = require("../../index");
-const config = require("../../config/config.js");
-const guild = require("../../config/guild.js");
-const { QuickDB } = require("quick.db");
+const { EmbedBuilder } = require('discord.js');
+const { QuickDB } = require('quick.db');
+const client = require('../../index');
+const config = require('../../config/config.js');
+const guild = require('../../config/guild.js');
+
 const db = new QuickDB();
 
 module.exports = {
-  name: "interactionCreate",
+  name: 'interactionCreate',
 };
 
-client.on("interactionCreate", async (interaction) => {
-
+client.on('interactionCreate', async (interaction) => {
   if (interaction.isChatInputCommand()) {
     console.log(`[SLASH] ${interaction.commandName} by ${interaction.user.username}`);
     const command = client.slash_commands.get(interaction.commandName);
@@ -54,17 +54,18 @@ client.on("interactionCreate", async (interaction) => {
     // Modals:
     const modal = client.modals.get(interaction.customId);
 
-    if (!modal)
+    if (!modal) {
       return interaction.reply({
         embeds: [
           new EmbedBuilder()
             .setDescription(
-              "Something went wrong... Probably the Modal ID is not defined in the modals handler."
+              'Something went wrong... Probably the Modal ID is not defined in the modals handler.',
             )
-            .setColor("Red"),
+            .setColor('Red'),
         ],
         ephemeral: true,
       });
+    }
 
     try {
       modal.run(client, interaction, config, db);
@@ -76,21 +77,19 @@ client.on("interactionCreate", async (interaction) => {
   /* --- Selecting Rank ---
      uses /rank to pick from a list of ranks
   */
-  if (interaction.customId === 'rankSelect') {
-
+  if (interaction.customId === 'select') {
     const input = interaction.values[0];
+    console.log(input)
 
     const usersRankID = guild.Roles.Ranks[input];
     const role = interaction.guild.roles.cache.get(usersRankID);
 
     await interaction.member.roles
-    .add(role)
-    .then((member) =>
-      interaction.reply({
+      .add(role)
+      .then((member) => interaction.reply({
         content: `you now have the ${input} role`,
-        ephemeral: true
-      })
-    )
+        ephemeral: true,
+      }));
   }
 
   /* --- Verifying membership ---
@@ -98,19 +97,15 @@ client.on("interactionCreate", async (interaction) => {
   */
   if (interaction.customId === 'verify') {
     const role = interaction.guild.roles.cache.get(guild.Roles.verified);
-    if(role) {
+    if (role) {
       return interaction.member.roles
         .add(role)
-        .then((member) =>
-          interaction.reply({
-            content: `you are now a ${role}`,
-            ephemeral: true
-          })
-        .catch(console.log('[WARN] Role already assigned'))
-        );
-      } else {
-        console.error('There was an error getting the role')
-        return;
-      }
+        .then((member) => interaction.reply({
+          content: `you are now a ${role}`,
+          ephemeral: true,
+        })
+          .catch(console.log('[WARN] Role already assigned')));
     }
+    console.error('There was an error getting the role');
+  }
 });

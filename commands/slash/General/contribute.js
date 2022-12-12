@@ -1,21 +1,19 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
-    name: "contribute",
-    description: "Make me better",
-    type: 1,
-    options: [],
-    permissions: {
-        DEFAULT_MEMBER_PERMISSIONS: "SendMessages"
-    },
-    run: async (client, interaction, config, db) => {
-        return interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setDescription(`Make me better please :-) https://github.com/ryelo/froggy`)
-                    .setColor('Green')
-            ],
-            ephemeral: false
-        })
-    },
+  name: 'contribute',
+  description: 'Make me better',
+  type: 1,
+  options: [],
+  permissions: {
+    DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
+  },
+  run: async (client, interaction, config, db) => interaction.reply({
+    embeds: [
+      new EmbedBuilder()
+        .setDescription('Make me better please :-) https://github.com/ryelo/froggy')
+        .setColor('Green'),
+    ],
+    ephemeral: false,
+  }),
 };

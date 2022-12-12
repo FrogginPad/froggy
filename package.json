@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node index.js",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ./*.js"
+    "lint:fix": "eslint --fix ."
   },
   "keywords": [],
   "author": "ryelo",

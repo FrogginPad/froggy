@@ -1,6 +1,6 @@
 module.exports = {
   Channels: {
-    welcome: '' // #WELCOME in template
+    welcome: '', // #WELCOME in template
   },
 
   Roles: {
@@ -12,8 +12,8 @@ module.exports = {
       gold: '',
       silver: '',
       bronze: '',
-      iron: ''
+      iron: '',
     },
-    verified: '' // Verified role, @frog in template
-  }
-}
+    verified: '', // Verified role, @frog in template
+  },
+};
