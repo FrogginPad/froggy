@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 
-const maps = Array(
+const MAPS = [
   'Ascent',
   'Breeze',
   'Bind',
@@ -9,7 +9,7 @@ const maps = Array(
   'Icebox',
   'Pearl',
   'Split',
-);
+];
 
 module.exports = {
   name: 'randommap',
@@ -20,7 +20,7 @@ module.exports = {
     DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
   },
   run: async (client, interaction, config, db) => {
-    const map = maps[Math.floor(Math.random() * maps.length)];
+    const map = MAPS[Math.floor(Math.random() * MAPS.length)];
     return interaction.reply({
       embeds: [
         new EmbedBuilder()
