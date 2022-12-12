@@ -13,7 +13,6 @@ module.exports = (client, config) => {
       console.log(`[HANDLER - MODALS] Loaded a file: ${file}`.brightGreen);
     } else {
       console.log(`[HANDLER - MODALS] Couldn't load the file ${file}. Missing modal ID.`.red);
-      continue;
     }
   }
 };

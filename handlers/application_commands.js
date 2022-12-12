@@ -9,7 +9,7 @@ require('dotenv').config();
 const { CLIENT_ID } = process.env;
 const { TOKEN } = process.env;
 
-module.exports = (client, config) => {
+module.exports = () => {
   console.log('0------------------| Application commands Handler:'.blue);
 
   const commands = [];
@@ -22,7 +22,7 @@ module.exports = (client, config) => {
     for (const file of SlashCommands) {
       const pull = require(`../commands/slash/${dir}/${file}`);
 
-      if (pull.name, pull.description, pull.type == 1) {
+      if (pull.name || pull.description || pull.type === 1) {
         client.slash_commands.set(pull.name, pull);
         console.log(`[HANDLER - SLASH] Loaded a file: ${pull.name} (#${client.slash_commands.size})`.brightGreen);
 
@@ -36,7 +36,6 @@ module.exports = (client, config) => {
         });
       } else {
         console.log(`[HANDLER - SLASH] Couldn't load the file ${file}, missing module name value, description, or type isn't 1.`.red);
-        continue;
       }
     }
   });
@@ -49,7 +48,7 @@ module.exports = (client, config) => {
     for (const file of UserCommands) {
       const pull = require(`../commands/user/${dir}/${file}`);
 
-      if (pull.name, pull.type == 2) {
+      if (pull.name && pull.type === 2) {
         client.user_commands.set(pull.name, pull);
         console.log(`[HANDLER - USER] Loaded a file: ${pull.name} (#${client.user_commands.size})`.brightGreen);
 
@@ -59,7 +58,6 @@ module.exports = (client, config) => {
         });
       } else {
         console.log(`[HANDLER - USER] Couldn't load the file ${file}, missing module name value or type isn't 2.`.red);
-        continue;
       }
     }
   });
@@ -72,7 +70,7 @@ module.exports = (client, config) => {
     for (const file of UserCommands) {
       const pull = require(`../commands/message/${dir}/${file}`);
 
-      if (pull.name, pull.type == 3) {
+      if (pull.name && pull.type === 3) {
         client.message_commands.set(pull.name, pull);
         console.log(`[HANDLER - MESSAGE] Loaded a file: ${pull.name} (#${client.user_commands.size})`.brightGreen);
 
@@ -82,7 +80,6 @@ module.exports = (client, config) => {
         });
       } else {
         console.log(`[HANDLER - MESSAGE] Couldn't load the file ${file}, missing module name value or type isn't 2.`.red);
-        continue;
       }
     }
   });

@@ -13,7 +13,6 @@ module.exports = (client, config) => {
         console.log(`[HANDLER - PREFIX] Loaded a file: ${pull.config.name} (#${client.prefix_commands.size})`.brightGreen);
       } else {
         console.log(`[HANDLER - PREFIX] Couldn't load the file ${file}, missing module name value.`.red);
-        continue;
       }
     }
   });

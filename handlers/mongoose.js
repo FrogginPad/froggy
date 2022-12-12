@@ -8,6 +8,6 @@ module.exports = (client) => {
   if (!MONGO) {
     console.warn("[WARN] A Mongo URI/URL isn't provided! (Not required)");
   } else {
-    superDjs.connectMongoDB(mongo, true, superDjs.colourText('[DATABASE] Connected to MongoDB!', 'green'));
+    superDjs.connectMongoDB(MONGO, true, superDjs.colourText('[DATABASE] Connected to MongoDB!', 'green'));
   }
 };
