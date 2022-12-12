@@ -1,19 +1,19 @@
 module.exports = {
   Channels: {
-    welcome: '1051607285329313915', // #WELCOME in template
+    welcome: '1049083871557341226', // #WELCOME in template
   },
 
   Roles: {
     Ranks: {
-      immortal: '1051607285312520234',
-      ascendant: '1051607285312520233',
-      diamond: '1051607285312520235',
-      platinum: '1051607285312520236',
-      gold: '1051607285312520237',
-      silver: '1051607285312520238',
-      bronze: '1051607285312520239',
-      iron: '1051607285312520240',
+      immortal: '1050440241783250944',
+      ascendant: '1050454583677304832',
+      diamond: '1050440163098120263',
+      platinum: '1050440077433655407',
+      gold: '1050440038665699328',
+      silver: '1050439366637539348',
+      bronze: '1050439271640739881',
+      iron: '1050438988684599296',
     },
-    verified: '1051607285329313912', // Verified role, @frog in template
+    verified: '1049082583813738696', // Verified role, @frog in template
   },
 };
