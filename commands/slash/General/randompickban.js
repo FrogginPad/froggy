@@ -1,28 +1,15 @@
 const { EmbedBuilder } = require('discord.js');
+const consts = require('../../consts/consts');
 
-function getRandomMap() {
+
+function getRandomMap(maps) {
   const randomMap = maps[Math.floor(Math.random() * maps.length)];
-  maps = maps.filter((map) => map !== randomMap);
   return randomMap;
 }
 
 function getRandomSide() {
   return Math.random() >= 0.5 ? 'Attack' : 'Defense';
 }
-
-function createMapArray() {
-  maps = Array(
-    'Ascent',
-    'Breeze',
-    'Bind',
-    'Fracture',
-    'Haven',
-    'Icebox',
-    'Pearl',
-    'Split',
-  );
-}
-createMapArray();
 
 module.exports = {
   name: 'randompickban',
@@ -33,38 +20,45 @@ module.exports = {
     DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
   },
   run: async (client, interaction, config, db) => {
-    const banOne = getRandomMap();
-    const banTwo = getRandomMap();
-    const banThree = getRandomMap();
-    const banFour = getRandomMap();
-    const pickOne = getRandomMap();
-    const pickTwo = getRandomMap();
-    const pickThree = getRandomMap();
-    const sideOne = getRandomSide();
-    const sideTwo = getRandomSide();
-    const sideThree = getRandomSide();
+    let editableMaps = consts.MAPS;
+    const teams = 2;
+    const rounds = 3;
+    const game = {
+      maps: [],
+      sides: [],
+    };
 
-    // resetting map list
-    createMapArray();
+    // pick sides, doesn't really need to do after map because it's random and doesn't use maps array
+    [...Array(rounds).keys()].map((i) => game.sides.push(getRandomSide()));
+
+    // get 7 maps
+    [...Array(teams * rounds + 1).keys()].map((i) => {
+      const selection = getRandomMap(editableMaps);
+      game.maps.push(selection);
+      editableMaps = editableMaps.filter((map) => map !== selection);
+    });
 
     return interaction.reply({
       embeds: [
         new EmbedBuilder()
           .setDescription(`
-                    Team A bans: ${banOne}
-                    Team B bans: ${banTwo}
+                    === Round 1 ===
+                    Team A bans: ${game.maps[0]}
+                    Team B bans: ${game.maps[1]}
 
-                    **Team A picks: ${pickOne}**
-                    **Team B starts on ${sideOne}**
+                    **Team A picks: ${game.maps[2]}**
+                    **Team B starts on ${game.sides[0]}**
 
-                    **Team B picks: ${pickTwo}**
-                    **Team A starts on ${sideTwo}**
+                    === Round 2 ===
+                    **Team B picks: ${game.maps[3]}**
+                    **Team A starts on ${game.sides[1]}**
 
-                    Team A bans: ${banThree}
-                    Team B bans: ${banFour}
+                    === Decider ===
+                    Team A bans: ${game.maps[4]}
+                    Team B bans: ${game.maps[5]}
 
-                    **Decider map: ${pickThree}**
-                    **Team A starts on ${sideThree}**
+                    **Decider map: ${game.maps[6]}**
+                    **Team A starts on ${game.sides[2]}**
                 `)
           .setColor('Green'),
       ],
