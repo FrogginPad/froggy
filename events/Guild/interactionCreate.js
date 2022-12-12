@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 const { QuickDB } = require('quick.db');
 const client = require('../../index');
-const config = require('../../config/config.js');
-const guild = require('../../config/guild.js');
+const config = require('../../config/config');
+const guild = require('../../config/guild');
 
 const db = new QuickDB();
 
@@ -55,7 +55,7 @@ client.on('interactionCreate', async (interaction) => {
     const modal = client.modals.get(interaction.customId);
 
     if (!modal) {
-      return interaction.reply({
+      interaction.reply({
         embeds: [
           new EmbedBuilder()
             .setDescription(
@@ -98,7 +98,7 @@ client.on('interactionCreate', async (interaction) => {
   if (interaction.customId === 'verify') {
     const role = interaction.guild.roles.cache.get(guild.Roles.verified);
     if (role) {
-      return interaction.member.roles
+      interaction.member.roles
         .add(role)
         .then((member) => interaction.reply({
           content: `you are now a ${role}`,

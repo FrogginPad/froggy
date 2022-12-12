@@ -1,7 +1,7 @@
 const { EmbedBuilder, PermissionsBitField, codeBlock } = require('discord.js');
 const { QuickDB } = require('quick.db');
 const client = require('../../index');
-const config = require('../../config/config.js');
+const config = require('../../config/config');
 
 const db = new QuickDB();
 
@@ -21,7 +21,7 @@ client.on('messageCreate', async (message) => {
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const cmd = args.shift().toLowerCase();
-  if (cmd.length == 0) return;
+  if (cmd.length === 0) return;
 
   const command = client.prefix_commands.get(cmd);
 
@@ -31,7 +31,7 @@ client.on('messageCreate', async (message) => {
     console.log(`[PREFIX COMMAND] ${config.Prefix}${command.config.name} by ${message.author.username}`);
     if (command.permissions) {
       if (!message.member.permissions.has(PermissionsBitField.resolve(command.permissions || []))) {
-        return message.reply({
+        message.reply({
           embeds: [
             new EmbedBuilder()
               .setDescription('🚫 Unfortunately, you are not authorized to use this command.')
@@ -41,7 +41,7 @@ client.on('messageCreate', async (message) => {
       }
     }
 
-    if (command.owner, command.owner == true) {
+    if (command.owner || command.owner === true) {
       if (config.Users?.OWNERS) {
         const allowedUsers = []; // New Array.
 
@@ -52,7 +52,7 @@ client.on('messageCreate', async (message) => {
         });
 
         if (!config.Users.OWNERS.some((ID) => message.member.id.includes(ID))) {
-          return message.reply({
+          message.reply({
             embeds: [
               new EmbedBuilder()
                 .setDescription(`🚫 Sorry but only owners can use this command! Allowed users:\n**${allowedUsers.join(', ')}**`)
