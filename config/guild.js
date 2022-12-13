@@ -1,6 +1,7 @@
 module.exports = {
   Channels: {
     welcome: '1049083871557341226', // #WELCOME in template
+    general: '1049083871557341226'
   },
 
   Roles: {
