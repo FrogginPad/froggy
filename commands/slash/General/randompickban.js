@@ -1,7 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const consts = require('../../consts/consts');
 
-
 function getRandomMap(maps) {
   const randomMap = maps[Math.floor(Math.random() * maps.length)];
   return randomMap;
