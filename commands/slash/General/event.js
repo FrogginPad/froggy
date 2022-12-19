@@ -55,7 +55,7 @@ module.exports = {
       scheduledStartTime: readableDate,
       privacyLevel: 2,
       entityType: 2,
-      channel
+      channel,
     });
 
     console.log(event);
@@ -64,7 +64,7 @@ module.exports = {
       content: `${eventsBaseURL}/${event.guildId}/${event.id}`,
       embeds: [
         new EmbedBuilder()
-          .setDescription(`Event scheduled`)
+          .setDescription('Event scheduled')
           .setColor('Green'),
       ],
     });
