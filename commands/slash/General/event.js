@@ -70,7 +70,7 @@ module.exports = {
         });
 
         collector.on('end', (collected) => {
-          if(reacted.length) {
+          if (reacted.length) {
             console.log(`Event collection completed, logged ${reacted.toString()}`);
             const reminderEmbed = new EmbedBuilder()
               .setTitle('Reminder!')
