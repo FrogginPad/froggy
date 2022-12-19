@@ -11,9 +11,7 @@ function getReadableDate(date) {
   return false;
 }
 
-function getUnixDate(date) {
-  return Sugar.Date.format(new Date(date), '{X}');
-}
+const eventsBaseURL = 'https://discord.com/events';
 
 module.exports = {
   name: 'event',
@@ -21,8 +19,14 @@ module.exports = {
   type: 1,
   options: [
     {
+      name: 'name',
+      description: 'Name of event',
+      type: 3,
+      required: true,
+    },
+    {
       name: 'description',
-      description: 'Description of event',
+      description: 'description of event',
       type: 3,
       required: true,
     },
@@ -39,60 +43,30 @@ module.exports = {
   run: async (client, interaction, config, db) => {
     const { options } = interaction;
     const inputs = options._hoistedOptions;
-    const channel = client.channels.cache.get(guild.Channels.general); // always send it to the general for now
+    const channel = await client.channels.cache.get(guild.Channels.customsVoice); // always send it to the general for now
 
-    const readableDate = getReadableDate(inputs[1].value);
+    const name = inputs[0].value;
+    const description = inputs[1].value;
+    const readableDate = getReadableDate(inputs[2].value);
 
-    if (readableDate) {
-      const unixDate = getUnixDate(readableDate);
-      const reminderDate = Sugar.Date.rewind(new Date(readableDate), '10 minutes');
-      const msTillDate = Math.abs(Sugar.Date.millisecondsUntil(reminderDate)); // No idea why this is negative, but flip it
+    const event = await interaction.guild.scheduledEvents.create({
+      name,
+      description,
+      scheduledStartTime: readableDate,
+      privacyLevel: 2,
+      entityType: 2,
+      channel
+    });
 
-      const description = `${inputs[0].value} \n\n **Date**: <t:${unixDate}:F> \n\n Event starts <t:${unixDate}:R>`;
-      const embed = new EmbedBuilder()
-        .setColor('Green')
-        .setDescription(description);
+    console.log(event);
 
-      let reacted = [];
-
-      try {
-        const message = await channel.send({ embeds: [embed] });
-        await message.react('✅');
-        await message.react('❌');
-        await interaction.reply({ content: 'Event scheduled', ephemeral: true });
-
-        const filter = (reaction, user) => reaction.emoji.name === '✅';
-
-        const collector = message.createReactionCollector({ filter, time: msTillDate });
-
-        collector.on('collect', (reaction, user) => {
-          reacted.push(`${user}`);
-        });
-
-        collector.on('end', (collected) => {
-          if (reacted.length) {
-            console.log(`Event collection completed, logged ${reacted.toString()}`);
-            const reminderEmbed = new EmbedBuilder()
-              .setTitle('Reminder!')
-              .setDescription('Event starts in 10 minutes')
-              .setColor('Green');
-            channel.send({ content: reacted.toString(), embeds: [reminderEmbed] });
-            reacted = [];
-          }
-          reacted = []; // reset reacted list, if the event is deleted, users could remain in queue
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      interaction.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setDescription('There was an error with your date, please try again')
-            .setColor('Red'),
-        ],
-        ephemeral: true,
-      });
-    }
+    interaction.reply({
+      content: `${eventsBaseURL}/${event.guildId}/${event.id}`,
+      embeds: [
+        new EmbedBuilder()
+          .setDescription(`Event scheduled`)
+          .setColor('Green'),
+      ],
+    });
   },
 };
