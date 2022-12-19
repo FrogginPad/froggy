@@ -70,13 +70,16 @@ module.exports = {
         });
 
         collector.on('end', (collected) => {
-          console.log(`Event collection completed, logged ${reacted.toString()}`);
-          const reminderEmbed = new EmbedBuilder()
-            .setTitle('Reminder!')
-            .setDescription('Event starts in 10 minutes')
-            .setColor('Green');
-          channel.send({ content: reacted.toString(), embeds: [reminderEmbed] });
-          reacted = [];
+          if(reacted.length) {
+            console.log(`Event collection completed, logged ${reacted.toString()}`);
+            const reminderEmbed = new EmbedBuilder()
+              .setTitle('Reminder!')
+              .setDescription('Event starts in 10 minutes')
+              .setColor('Green');
+            channel.send({ content: reacted.toString(), embeds: [reminderEmbed] });
+            reacted = [];
+          }
+          reacted = []; // reset reacted list, if the event is deleted, users could remain in queue
         });
       } catch (err) {
         console.log(err);
