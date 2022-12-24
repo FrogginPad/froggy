@@ -28,9 +28,14 @@ module.exports = {
 
     shuffle(users);
 
-    if(users.length) {
-      const half = Math.ceil(users.length / 2); 
-      textChannel.send({ content: `**Team 1** \n ${users.slice(0, half).toString()} \n\n **Team 2** \n ${users.slice(half)}`  });
+    if(users?.length) {
+      const half = 5;
+      const cap = 10
+      const team1 = users.slice(0, half);
+      const team2 = users.slice(half, cap);
+      const extras = users.slice(cap);
+
+      textChannel.send({ content: `**Team 1** \n ${team1.toString()} \n\n **Team 2** \n ${team2.toString()} \n\n **Extras** \n ${extras.toString() || '*none*'}`});
       interaction.reply({
         embeds: [
           new EmbedBuilder()
