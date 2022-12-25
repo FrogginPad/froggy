@@ -4,8 +4,8 @@ const guild = require('../../../config/guild');
 // some random shuffle algo
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
 }
@@ -22,20 +22,20 @@ module.exports = {
     const voiceChannel = await client.channels.cache.get(guild.Channels.customsVoice);
     const textChannel = await client.channels.cache.get(guild.Channels.customsText);
 
-    let users = []
+    const users = [];
 
     voiceChannel.members.forEach((members) => users.push(members));
 
     shuffle(users);
 
-    if(users?.length) {
+    if (users?.length) {
       const half = 5;
-      const cap = 10
+      const cap = 10;
       const team1 = users.slice(0, half);
       const team2 = users.slice(half, cap);
       const extras = users.slice(cap);
 
-      textChannel.send({ content: `**Team 1** \n ${team1.toString()} \n\n **Team 2** \n ${team2.toString()} \n\n **Extras** \n ${extras.toString() || '*none*'}`});
+      textChannel.send({ content: `**Team 1** \n ${team1.toString()} \n\n **Team 2** \n ${team2.toString()} \n\n **Extras** \n ${extras.toString() || '*none*'}` });
       interaction.reply({
         embeds: [
           new EmbedBuilder()

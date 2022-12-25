@@ -3,7 +3,7 @@ module.exports = {
     welcome: '', // #WELCOME in template
     general: '',
     customsVoice: '',
-    customsText: ''
+    customsText: '',
   },
 
   Roles: {
