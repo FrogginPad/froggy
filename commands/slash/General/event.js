@@ -58,8 +58,6 @@ module.exports = {
       channel,
     });
 
-    console.log(event);
-
     interaction.reply({
       content: `${eventsBaseURL}/${event.guildId}/${event.id}`,
       embeds: [
