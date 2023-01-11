@@ -13,7 +13,7 @@ module.exports = {
     return interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setDescription(`The coinflip is: ${flip}`)
+          .setDescription(`${flip}`)
           .setColor('Green'),
       ],
       ephemeral: false,
