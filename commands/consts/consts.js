@@ -6,6 +6,7 @@ module.exports = {
     'Fracture',
     'Haven',
     'Icebox',
+    'Lotus',
     'Pearl',
     'Split',
   ],

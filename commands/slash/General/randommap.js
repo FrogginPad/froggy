@@ -14,7 +14,7 @@ module.exports = {
     return interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setDescription(`Your map pick: ${map}`)
+          .setDescription(`${map}`)
           .setColor('Green'),
       ],
       ephemeral: false,
