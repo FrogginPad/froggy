@@ -20,7 +20,6 @@ module.exports = {
   },
   run: async (client, interaction, config, db) => {
     const voiceChannel = await client.channels.cache.get(guild.Channels.customsVoice);
-    const textChannel = await client.channels.cache.get(guild.Channels.customsText);
 
     const users = [];
 
@@ -35,14 +34,8 @@ module.exports = {
       const team2 = users.slice(half, cap);
       const extras = users.slice(cap);
 
-      textChannel.send({ content: `**Team 1** \n ${team1.toString()} \n\n **Team 2** \n ${team2.toString()} \n\n **Extras** \n ${extras.toString() || '*none*'}` });
       interaction.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setDescription('Generating teams')
-            .setColor('Green'),
-        ],
-        ephemeral: true,
+        content: `**Team 1** \n ${team1.toString()} \n\n **Team 2** \n ${team2.toString()} \n\n **Extras** \n ${extras.toString() || '*none*'}`,
       });
     } else {
       interaction.reply({
