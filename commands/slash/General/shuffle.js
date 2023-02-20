@@ -19,7 +19,7 @@ module.exports = {
     DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
   },
   run: async (client, interaction, config, db) => {
-    const voiceChannel = await client.channels.cache.get(guild.Channels.customsVoice);
+    const voiceChannel = await client.channels.fetch(guild.Channels.customsVoice);
 
     const users = [];
 
