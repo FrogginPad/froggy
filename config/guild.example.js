@@ -2,6 +2,7 @@ module.exports = {
   Channels: {
     welcome: '', // #WELCOME in template
     general: '',
+    generalVoice: '',
     customsVoice: '',
     customsText: '',
   },
