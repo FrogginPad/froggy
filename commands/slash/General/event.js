@@ -43,28 +43,39 @@ module.exports = {
   run: async (client, interaction, config, db) => {
     const { options } = interaction;
     const inputs = options._hoistedOptions;
-    const channel = await client.channels.cache.get(guild.Channels.customsVoice); // always send it to the general for now
+    const channel = await client.channels.cache.get(guild.Channels.Customs.lobbyVoice);
 
     const name = inputs[0].value;
     const description = inputs[1].value;
+    const rawDate = inputs[2].value;
     const readableDate = getReadableDate(inputs[2].value);
 
-    const event = await interaction.guild.scheduledEvents.create({
-      name,
-      description,
-      scheduledStartTime: readableDate,
-      privacyLevel: 2,
-      entityType: 2,
-      channel,
-    });
+    if(!readableDate) {
+      interaction.reply({
+        content: `There was an error with this date: \`${rawDate}\` \n\n Instead, try something like: \`today at 9pm\``,
+        ephemeral: true
+      });
+    }
 
-    interaction.reply({
-      content: `${eventsBaseURL}/${event.guildId}/${event.id}`,
-      embeds: [
-        new EmbedBuilder()
-          .setDescription('Event scheduled')
-          .setColor('Green'),
-      ],
-    });
+    if(readableDate && name && description) {
+
+      const event = await interaction.guild.scheduledEvents.create({
+        name,
+        description,
+        scheduledStartTime: readableDate,
+        privacyLevel: 2,
+        entityType: 2,
+        channel,
+      });
+
+      const verifyEmbed = new EmbedBuilder()
+        .setDescription('Event scheduled')
+        .setColor('Green');
+
+      interaction.reply({
+        content: `${eventsBaseURL}/${event.guildId}/${event.id}`,
+        embeds: ([verifyEmbed])
+      });
+    }
   },
 };

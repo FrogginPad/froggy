@@ -14,7 +14,7 @@ module.exports = {
     DEFAULT_MEMBER_PERMISSIONS: PermissionFlagsBits.Administrator,
   },
   run: async (client, interaction, db) => {
-    const channel = client.channels.cache.get(guild.Channels.welcome);
+    const channel = client.channels.cache.get(guild.Channels.Enter.welcome);
     const verifyEmbed = new EmbedBuilder()
       .setTitle('Verification')
       .setDescription('Click the button to verify your account')

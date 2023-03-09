@@ -27,6 +27,8 @@ module.exports = {
     const formattedWho = whoInput.replace(/\s+/g, '');
     const who = formattedWho.match(/<((@!?\d+)|(:.+?:\d+))>/g);
 
+
+    // Durstenfeld shuffle (thanks stackoverflow)
     const shuffle = ([...arr]) => {
       let m = arr.length;
       while (m) {

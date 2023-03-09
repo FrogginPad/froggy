@@ -1,10 +1,23 @@
 module.exports = {
   Channels: {
-    welcome: '', // #WELCOME in template
-    general: '',
-    generalVoice: '',
-    customsVoice: '',
-    customsText: '',
+    Enter: {
+      welcome: '', // #WELCOME in template
+    },
+    OnlyFrogs: {
+      generalText: '',
+      clipsText: '',
+      esportsText: ''
+    },
+    General: {
+      generalVoice: ''
+    },
+    Customs: {
+      lobbyText: '',
+      resultsText: '',
+      lobbyVoice: '',
+      team1Voice: '',
+      team2Voice: ''
+    }
   },
 
   Roles: {

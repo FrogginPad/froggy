@@ -108,4 +108,54 @@ client.on('interactionCreate', async (interaction) => {
     }
     console.error('There was an error getting the role');
   }
+
+  /* --- Coinflip ---
+    generates coinflip -- answers "heads" or "tails"
+  */
+  if (interaction.customId === 'coinflip') {
+    const flip = Math.random() >= 0.5 ? 'heads' : 'tails';
+    interaction.reply({
+      content: `${interaction.user} flipped coin: **${flip}**`
+    })
+  };
+
+  /* --- Start match ---
+    uses button after shuffle to distribute teams
+  */
+    if (interaction.customId === 'startmatch') {
+
+    // Assign team 1
+    const team1Channel = guild.Channels.Customs.team1Voice;
+    const team1Members = global.matchDetails.team1;
+    team1Members && team1Members.map(member => member.voice.setChannel(team1Channel));
+
+    // Assign team 2
+    const team2Channel = guild.Channels.Customs.team2Voice;
+    const team2Members = global.matchDetails.team2;
+    team2Members && team2Members.map(member => member.voice.setChannel(team2Channel));
+
+    interaction.reply({
+      content: `🐸 ${interaction.user} started match`
+    })
+  }
+
+    /* --- end match ---
+    user button after shuffle/match to regroup all players
+  */
+    if (interaction.customId === 'endmatch') {
+
+      const lobbyVoice = guild.Channels.Customs.lobbyVoice;
+
+      // Recall team 1
+      const team1Members = global.matchDetails.team1;
+      team1Members && team1Members.map(member => member.voice.setChannel(lobbyVoice));
+  
+      // Recall team 2
+      const team2Members = global.matchDetails.team2;
+      team2Members && team2Members.map(member => member.voice.setChannel(lobbyVoice));
+  
+      interaction.reply({
+        content: `😩 ${interaction.user} ended match`
+      })
+    }
 });
