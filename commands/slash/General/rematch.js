@@ -1,4 +1,6 @@
-const { EmbedBuilder, ButtonStyle, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const {
+  EmbedBuilder, ButtonStyle, ActionRowBuilder, ButtonBuilder,
+} = require('discord.js');
 
 module.exports = {
   name: 'rematch',
@@ -9,8 +11,7 @@ module.exports = {
     DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
   },
   run: async (client, interaction, config, db) => {
-
-    if(global.matchDetails) {
+    if (global.matchDetails) {
       interaction.reply({
         content: `**Team 1** \n ${global.matchDetails.team1.toString()} \n\n **Team 2** \n ${global.matchDetails.team2.toString()} \n\n **Extras** \n ${global.matchDetails.extras.toString() || '*none*'}`,
         components: [

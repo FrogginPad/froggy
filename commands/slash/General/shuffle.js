@@ -1,4 +1,6 @@
-const { EmbedBuilder, ButtonStyle, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const {
+  EmbedBuilder, ButtonStyle, ActionRowBuilder, ButtonBuilder,
+} = require('discord.js');
 const guild = require('../../../config/guild');
 
 // some random shuffle algo
@@ -37,8 +39,8 @@ module.exports = {
       global.matchDetails = {
         team1,
         team2,
-        extras
-      }
+        extras,
+      };
 
       interaction.reply({
         content: `**Team 1** \n ${team1.toString()} \n\n **Team 2** \n ${team2.toString()} \n\n **Extras** \n ${extras.toString() || '*none*'}`,
