@@ -3,6 +3,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const cron = require('cron');
 const client = require('../../index');
+const guild = require('../../config/guild');
 
 module.exports = {
   name: 'scraper.js',
