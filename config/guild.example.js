@@ -6,7 +6,8 @@ module.exports = {
     OnlyFrogs: {
       generalText: '',
       clipsText: '',
-      esportsText: ''
+      esportsText: '',
+      matchesText: '',
     },
     General: {
       generalVoice: ''

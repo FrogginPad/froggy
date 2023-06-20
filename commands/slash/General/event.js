@@ -50,15 +50,14 @@ module.exports = {
     const rawDate = inputs[2].value;
     const readableDate = getReadableDate(inputs[2].value);
 
-    if(!readableDate) {
+    if (!readableDate) {
       interaction.reply({
         content: `There was an error with this date: \`${rawDate}\` \n\n Instead, try something like: \`today at 9pm\``,
-        ephemeral: true
+        ephemeral: true,
       });
     }
 
-    if(readableDate && name && description) {
-
+    if (readableDate && name && description) {
       const event = await interaction.guild.scheduledEvents.create({
         name,
         description,
@@ -74,7 +73,7 @@ module.exports = {
 
       interaction.reply({
         content: `${eventsBaseURL}/${event.guildId}/${event.id}`,
-        embeds: ([verifyEmbed])
+        embeds: ([verifyEmbed]),
       });
     }
   },
