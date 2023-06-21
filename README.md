@@ -14,7 +14,7 @@ Discord.js Documentation is linked [here](https://discord.js.org/#/docs/discord.
 
 ## How to setup
 
-More info can be found in the [docs](https://github.com/ryelo/froggy/tree/main/docs)
+More info can be found in the [setup docs](https://github.com/ryelo/froggy/tree/main/docs/setup.md)
 
 ## Requirements
 

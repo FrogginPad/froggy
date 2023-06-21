@@ -31,7 +31,8 @@ module.exports = {
     [...Array(rounds).keys()].map((i) => game.sides.push(getRandomSide()));
 
     // get 7 maps
-    [...Array(teams * rounds + 1).keys()].map((i) => {
+    // eslint-disable-next-line
+    [...Array(teams * rounds + 1).keys()].map(() => {
       const selection = getRandomMap(editableMaps);
       game.maps.push(selection);
       editableMaps = editableMaps.filter((map) => map !== selection);

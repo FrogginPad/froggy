@@ -20,6 +20,7 @@
         "no-console": "off",
         "global-require": "off",
         "no-underscore-dangle": "off",
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "no-unused-expressions": "off"
     }
 }

@@ -74,24 +74,6 @@ client.on('interactionCreate', async (interaction) => {
     }
   }
 
-  /* --- Selecting Rank ---
-     uses /rank to pick from a list of ranks
-  */
-  if (interaction.customId === 'select') {
-    const input = interaction.values[0];
-    console.log(input);
-
-    const usersRankID = guild.Roles.Ranks[input];
-    const role = interaction.guild.roles.cache.get(usersRankID);
-
-    await interaction.member.roles
-      .add(role)
-      .then((member) => interaction.reply({
-        content: `you now have the ${input} role`,
-        ephemeral: true,
-      }));
-  }
-
   /* --- Verifying membership ---
      uses button in #welcome channel then assigns role
   */

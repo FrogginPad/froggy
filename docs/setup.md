@@ -36,20 +36,11 @@
       },
 
       Roles: {
-        Ranks: {
-          immortal: '',
-          ascendant: '',
-          diamond: '',
-          platinum: '',
-          gold: '',
-          silver: '',
-          bronze: '',
-          iron: ''
-        },
         verified: '' // Verified role, @frog in template
       }
     }
     ```
 
-8. Type in the terminal: `yarn install`
-9. Type in the terminal: `yarn start`
+8. Type in the terminal: `npm install`
+9. Type in the terminal: `npm start`
+10. Run a command `!uptime` in your discord server

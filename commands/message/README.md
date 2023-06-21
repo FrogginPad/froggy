@@ -1,3 +1,10 @@
+# Message
+
+Replies
+
+## Basic Setup
+
+```js
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
@@ -11,3 +18,4 @@ module.exports = {
     ephemeral: true,
   }),
 };
+```
