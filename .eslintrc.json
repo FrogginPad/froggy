@@ -20,6 +20,9 @@
         "no-console": "off",
         "global-require": "off",
         "no-underscore-dangle": "off",
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "no-unused-expressions": "off",
+        "import/no-unresolved": "off", // needs due to guild.js file being ignored
+        "import/extensions": "off" // needs due to guild.js file being ignored
     }
 }
