@@ -8,23 +8,20 @@ const statusText = {
   warning: '⚠️ Warning',
   info: 'ℹ️ Info',
   critical: '🚨 Critical',
-  incidents: '🚨 Incidents'
-}
+  incidents: '🚨 Incidents',
+};
 
 const generateValStatusText = (data) => {
+  if (data.status === 'success') { return statusText.success; }
 
-  const status = data.status;
+  if (data.status === 'maintenances') {
+    return `${statusText.maintenances}\n${data.titles[0].content}\n Status: ${data.maintenance_status}`;
+  }
 
-  if(status === 'success') { return statusText.success};
-
-  if(status === 'maintenances') {
-    return `${statusText.maintenances}\n${data.titles[0].content}\n Status: ${data.maintenance_status}`
-  };
-
-  if(status === 'incidents') {
-    return `${statusText[data.incident_severity]}\n${data.titles[0].content}`
-  };
-}
+  if (data.status === 'incidents') {
+    return `${statusText[data.incident_severity]}\n${data.titles[0].content}`;
+  }
+};
 
 module.exports = {
   config: {
@@ -34,7 +31,6 @@ module.exports = {
   permissions: ['SendMessages'],
   owner: false,
   run: async (client, message, args, prefix, config, db) => {
-
     const apiStatus = await status();
     const valApiStatus = await valStatus();
 
@@ -43,14 +39,14 @@ module.exports = {
         new EmbedBuilder()
           .setColor('Aqua')
           .setTitle('Status')
-          .setDescription(`Status of all services`)
+          .setDescription('Status of all services')
           .addFields(
-            { name: 'App Status', value: `${statusText.success}`},
-            { name: 'API Status (tadpole)', value: `${apiStatus.data.status === 'success' ? `${statusText.success}` : `${statusText.incident}` }` },
-            { name: 'VALORANT Status', value: `${generateValStatusText(valApiStatus.data)}`},
-            { name: 'Client Latency', value: `\`${client.ws.ping}\` ms.`}
-          )
-      ]
+            { name: 'App Status', value: `${statusText.success}` },
+            { name: 'API Status (tadpole)', value: `${apiStatus.data.status === 'success' ? `${statusText.success}` : `${statusText.incident}`}` },
+            { name: 'VALORANT Status', value: `${generateValStatusText(valApiStatus.data)}` },
+            { name: 'Client Latency', value: `\`${client.ws.ping}\` ms.` },
+          ),
+      ],
     });
   },
 };

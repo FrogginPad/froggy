@@ -1,7 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const randommap = require('../../../functions/randommap');
 
-
 module.exports = {
   name: 'randommap',
   description: 'Random map picker',

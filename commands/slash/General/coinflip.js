@@ -1,5 +1,5 @@
-const coinflip = require('../../../functions/coinflip');
 const { EmbedBuilder } = require('discord.js');
+const coinflip = require('../../../functions/coinflip');
 
 module.exports = {
   name: 'coinflip',
@@ -10,7 +10,6 @@ module.exports = {
     DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
   },
   run: async (client, interaction, config, db) => {
-
     const res = await coinflip();
 
     return interaction.reply({
