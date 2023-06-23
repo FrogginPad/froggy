@@ -3,9 +3,9 @@
 1. Install [Visual Studio Code](https://code.visualstudio.com/Download)
 2. Install [Node.js](https://nodejs.org/en/download/) (Required: v^16.9.0)
 3. Clone
-  a. this project `git clone git@github.com:ryelo/froggy.git`
+  a. this project `git clone git@github.com:FrogginPad/froggy.git`
   b. tadpole (api) `git clone git@github.com:FrogginPad/tadpole.git`
-4. [Set up the bot + permissions](https://github.com/ryelo/froggy/tree/main/docs/createBot.md)
+4. [Set up the bot + permissions](https://github.com/FrogginPad/froggy/tree/main/docs/createBot.md)
 5. Go to `config/guild.example.js` and change all the values and rename to `guild.js` (keep file inside `config` directory)
 
     ```js
