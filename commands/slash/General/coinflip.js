@@ -1,3 +1,4 @@
+const coinflip = require('../../../functions/coinflip');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
@@ -9,11 +10,13 @@ module.exports = {
     DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
   },
   run: async (client, interaction, config, db) => {
-    const flip = Math.random() >= 0.5 ? 'heads' : 'tails';
+
+    const res = await coinflip();
+
     return interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setDescription(`${flip}`)
+          .setDescription(`${res.data.flip}`)
           .setColor('Green'),
       ],
       ephemeral: false,

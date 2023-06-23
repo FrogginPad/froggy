@@ -3,7 +3,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const cron = require('cron');
 const client = require('../../index');
-const guild = require('../../config/guild');
+const config = require('../../config/config');
 
 module.exports = {
   name: 'scraper.js',
@@ -106,7 +106,7 @@ async function ClearChat(channel, amountToDelete) {
 
 // runs once a day at specified time 'SS MM HH' - 06:00 default
 client.once('ready', () => {
-  const channel = client.channels.cache.get(guild.Channels.OnlyFrogs.matchesText);
+  const channel = client.channels.cache.get(config.Channels.OnlyFrogs.matchesText);
   const scheduledEvent = new cron.CronJob('00 00 06 * * *', () => {
     ClearChat(channel, 100);
     MessageBuilder(channel);

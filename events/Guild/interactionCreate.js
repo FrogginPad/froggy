@@ -2,7 +2,8 @@ const { EmbedBuilder } = require('discord.js');
 const { QuickDB } = require('quick.db');
 const client = require('../../index');
 const config = require('../../config/config');
-const guild = require('../../config/guild');
+const guild = require('../../config/config');
+const coinflip = require('../../functions/coinflip');
 
 const db = new QuickDB();
 
@@ -95,9 +96,9 @@ client.on('interactionCreate', async (interaction) => {
     generates coinflip -- answers "heads" or "tails"
   */
   if (interaction.customId === 'coinflip') {
-    const flip = Math.random() >= 0.5 ? 'heads' : 'tails';
+    const res = await coinflip();
     interaction.reply({
-      content: `${interaction.user} flipped coin: **${flip}**`,
+      content: `${interaction.user} flipped coin: **${res.data.flip}**`,
     });
   }
 

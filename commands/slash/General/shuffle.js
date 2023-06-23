@@ -1,7 +1,6 @@
 const {
   EmbedBuilder, ButtonStyle, ActionRowBuilder, ButtonBuilder,
 } = require('discord.js');
-const guild = require('../../../config/guild');
 
 // some random shuffle algo
 function shuffle(a) {
@@ -21,7 +20,7 @@ module.exports = {
     DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
   },
   run: async (client, interaction, config, db) => {
-    const voiceChannel = await client.channels.fetch(guild.Channels.Customs.lobbyVoice);
+    const voiceChannel = await client.channels.fetch(config.Channels.Customs.lobbyVoice);
 
     const users = [];
 

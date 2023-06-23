@@ -1,6 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
 const Sugar = require('sugar');
-const guild = require('../../../config/guild');
 
 function getReadableDate(date) {
   const readableDate = Sugar.Date.create(date);
@@ -43,7 +42,7 @@ module.exports = {
   run: async (client, interaction, config, db) => {
     const { options } = interaction;
     const inputs = options._hoistedOptions;
-    const channel = await client.channels.cache.get(guild.Channels.Customs.lobbyVoice);
+    const channel = await client.channels.cache.get(config.Channels.Customs.lobbyVoice);
 
     const name = inputs[0].value;
     const description = inputs[1].value;
