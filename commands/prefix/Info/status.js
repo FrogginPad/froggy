@@ -5,21 +5,24 @@ const valStatus = require('../../../functions/valStatus');
 const statusText = {
   success: '✅ Good',
   maintenances: '🔧 Maintenance',
+  incidents: '🚨 Incidents',
+};
+
+const severityText = {
   warning: '⚠️ Warning',
   info: 'ℹ️ Info',
   critical: '🚨 Critical',
-  incidents: '🚨 Incidents',
-};
+}
 
 const generateValStatusText = (data) => {
   if (data.status === 'success') { return statusText.success; }
 
   if (data.status === 'maintenances') {
-    return `${statusText.maintenances}\n${data.titles[0].content}\n Status: ${data.maintenance_status}`;
+    return `${statusText.maintenances}\n${data.title}\n Status: ${data.maintenance_status}`;
   }
 
   if (data.status === 'incidents') {
-    return `${statusText[data.incident_severity]}\n${data.titles[0].content}`;
+    return `${severityText[data.severity]}\n${data.title}`;
   }
 };
 
