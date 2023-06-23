@@ -24,4 +24,10 @@ module.exports = {
   Roles: {
     verified: '', // Verified role, @frog in template
   },
+
+  Prefix: '!', // YOUR BOT PREFIX, USED FOR PREFIX COMMANDS
+
+  Users: {
+    OWNERS: [''], // THE BOT OWNERS ID.
+  },
 };
