@@ -12,7 +12,7 @@ const severityText = {
   warning: '⚠️ Warning',
   info: 'ℹ️ Info',
   critical: '🚨 Critical',
-}
+};
 
 const generateValStatusText = (data) => {
   if (data.status === 'success') { return statusText.success; }
