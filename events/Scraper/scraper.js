@@ -39,6 +39,7 @@ function SplitMatchStrings(allMatches) {
     if (i % 4 === 0) {
       const tl = allMatches[i].trim();
       const mf = allMatches[i + 1].replace(/[vs()]/g, '').slice(-3);
+      if (!mf.startsWith('Bo')) { break; }
       const tr = allMatches[i + 2].trim();
       const time = new Date(allMatches[i + 3].split(' UTC')[0].replace(' -', '').concat(' UTC'));
       const tour = allMatches[i + 3].split(' UTC')[1];
@@ -65,8 +66,7 @@ async function MatchBuilder(matchData, tourneyData) {
   // reduce duplicates (ty liquipedia)
   return matchArr
     .filter((match) => tourneyData.includes(match.tourney)
-      && MatchIsWithin24Hours(today, match.matchTime)
-      && match.matchFormat.startsWith('Bo'))
+      && MatchIsWithin24Hours(today, match.matchTime))
     .reduce((unique, o) => {
       if (!unique.some((obj) => obj.teamleft === o.teamleft && obj.teamright === o.teamright && obj.matchTime.toString() === o.matchTime.toString())) {
         unique.push(o);
@@ -104,6 +104,14 @@ async function ClearChat(channel, amountToDelete) {
   channel.bulkDelete(messages, true);
 }
 
+async function CheckIfBotHasRun(channel) {
+  const messageManager = channel.messages;
+  const messages = await messageManager.channel.messages.fetch({ limit: 100 });
+  if (messages.size === 0) {
+    MessageBuilder(channel);
+  }
+}
+
 // runs once a day at specified time 'SS MM HH' - 06:00 default
 client.once('ready', () => {
   const channel = client.channels.cache.get(config.Channels.OnlyFrogs.matchesText);
@@ -111,5 +119,7 @@ client.once('ready', () => {
     ClearChat(channel, 100);
     MessageBuilder(channel);
   });
+  // run on bot start if channel is empty (aka bot needs to check if it's run today)
+  CheckIfBotHasRun(channel);
   scheduledEvent.start();
 });
