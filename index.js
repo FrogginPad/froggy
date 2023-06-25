@@ -3,7 +3,6 @@ const {
 } = require('discord.js');
 const colors = require('colors');
 const config = require('./config/config');
-const guild = require('./config/config');
 require('dotenv').config();
 
 const { TOKEN } = process.env;
