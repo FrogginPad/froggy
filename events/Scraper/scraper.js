@@ -117,8 +117,8 @@ async function CheckIfBotHasRun(channel) {
 client.once('ready', () => {
   const channel = client.channels.cache.get(guild.Channels.OnlyFrogs.matchesText);
   const scheduledEvent = new cron.CronJob('00 00 06 * * *', () => {
-  ClearChat(channel, 100);
-  MessageBuilder(channel);
+    ClearChat(channel, 100);
+    MessageBuilder(channel);
   });
   // run on bot start if channel is empty (aka bot needs to check if it's run today)
   CheckIfBotHasRun(channel);
