@@ -39,7 +39,8 @@ function SplitMatchStrings(allMatches) {
     if (i % 4 === 0) {
       const tl = allMatches[i].trim();
       const mf = allMatches[i + 1].replace(/[vs()]/g, '').slice(-3);
-      if (!mf.startsWith('Bo')) { break; }
+      // stops building objects once reaching completed matches (2:1, 0:3, etc.)
+      if (!(mf.startsWith('Bo') || mf === '')) { break; }
       const tr = allMatches[i + 2].trim();
       const time = new Date(allMatches[i + 3].split(' UTC')[0].replace(' -', '').concat(' UTC'));
       const tour = allMatches[i + 3].split(' UTC')[1];
@@ -116,8 +117,8 @@ async function CheckIfBotHasRun(channel) {
 client.once('ready', () => {
   const channel = client.channels.cache.get(guild.Channels.OnlyFrogs.matchesText);
   const scheduledEvent = new cron.CronJob('00 00 06 * * *', () => {
-    ClearChat(channel, 100);
-    MessageBuilder(channel);
+  ClearChat(channel, 100);
+  MessageBuilder(channel);
   });
   // run on bot start if channel is empty (aka bot needs to check if it's run today)
   CheckIfBotHasRun(channel);
