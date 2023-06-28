@@ -10,7 +10,7 @@ module.exports = {
   owner: false,
   run: async (client, message, args, prefix, config, db) => {
     message.reply({
-      content: `Currently using version ${getVersion()}`,
+      content: `Currently using version [${getVersion()}](https://github.com/FrogginPad/Froggy)`,
     });
   },
 };
