@@ -66,13 +66,8 @@ module.exports = {
         channel,
       });
 
-      const verifyEmbed = new EmbedBuilder()
-        .setDescription('Event scheduled')
-        .setColor('Green');
-
       interaction.reply({
         content: `${eventsBaseURL}/${event.guildId}/${event.id}`,
-        embeds: ([verifyEmbed]),
       });
     }
   },

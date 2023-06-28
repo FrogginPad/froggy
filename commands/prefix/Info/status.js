@@ -30,6 +30,7 @@ module.exports = {
   config: {
     name: 'status',
     description: 'displays the status of everything',
+    usage: '!status',
   },
   permissions: ['SendMessages'],
   owner: false,

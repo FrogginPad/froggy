@@ -5,16 +5,9 @@ module.exports = {
     },
     OnlyFrogs: {
       generalText: '',
-      clipsText: '',
-      esportsText: '',
       matchesText: '',
     },
-    General: {
-      generalVoice: '',
-    },
     Customs: {
-      lobbyText: '',
-      resultsText: '',
       lobbyVoice: '',
       team1Voice: '',
       team2Voice: '',
