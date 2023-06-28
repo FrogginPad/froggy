@@ -1,5 +1,5 @@
 node_modules
 .DS_STORE
 .env
-config/guild.js
-guild.js
+config/config.js
+config.js

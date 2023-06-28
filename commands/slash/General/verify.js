@@ -1,7 +1,7 @@
 const {
   EmbedBuilder, ButtonStyle, ActionRowBuilder, ButtonBuilder, SlashCommandBuilder, CommandInteraction, PermissionFlagsBits,
 } = require('discord.js');
-const guild = require('../../../config/guild');
+const guild = require('../../../config/config');
 
 const VERIFICATION_MESSAGE = '💚 Enter the palace 💚';
 
