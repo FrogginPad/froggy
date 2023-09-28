@@ -2,12 +2,8 @@ const { EmbedBuilder } = require('discord.js');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const cron = require('cron');
-const client = require('../../index');
-const guild = require('../../config/guild');
-
-module.exports = {
-  name: 'scraper.js',
-};
+const client = require('../../../index');
+const guild = require('../../../config/guild');
 
 const tourneyLink = 'https://liquipedia.net/valorant/Liquipedia:Tournaments';
 const matchLink = 'https://liquipedia.net/valorant/Liquipedia:Matches';
@@ -39,6 +35,7 @@ function SplitMatchStrings(allMatches) {
     if (i % 4 === 0) {
       const tl = allMatches[i].trim();
       const mf = allMatches[i + 1].replace(/[vs()]/g, '').slice(-3);
+      
       // stops building objects once reaching completed matches (2:1, 0:3, etc.)
       if (!(mf.startsWith('Bo') || mf === '')) { break; }
       const tr = allMatches[i + 2].trim();
@@ -76,6 +73,13 @@ async function MatchBuilder(matchData, tourneyData) {
     }, []);
 }
 
+// clear channel of previous day's messages
+async function ClearChat(channel) {
+  const messageManager = channel.messages;
+  const messages = await messageManager.channel.messages.fetch({ limit: 100 });
+  channel.bulkDelete(messages, true);
+}
+
 function MessageBuilder(channel) {
   axios.get(tourneyLink).then((tourneyResp) => {
     axios.get(matchLink).then(async (matchResp) => {
@@ -98,29 +102,33 @@ function MessageBuilder(channel) {
   });
 }
 
-// clear channel of previous day's messages
-async function ClearChat(channel, amountToDelete) {
-  const messageManager = channel.messages;
-  const messages = await messageManager.channel.messages.fetch({ limit: amountToDelete });
-  channel.bulkDelete(messages, true);
-}
-
-async function CheckIfBotHasRun(channel) {
-  const messageManager = channel.messages;
-  const messages = await messageManager.channel.messages.fetch({ limit: 100 });
-  if (messages.size === 0) {
-    MessageBuilder(channel);
-  }
-}
-
-// runs once a day at specified time 'SS MM HH' - 06:00 default
-client.once('ready', () => {
+function GetMatches() {
   const channel = client.channels.cache.get(guild.Channels.OnlyFrogs.matchesText);
-  const scheduledEvent = new cron.CronJob('00 00 06 * * *', () => {
-    ClearChat(channel, 100);
-    MessageBuilder(channel);
+  ClearChat(channel);
+  MessageBuilder(channel);
+}
+
+// runs once a day at specified time 'SS MM HH' - 04:00 default
+client.once('ready', () => {
+  const scheduledEvent = new cron.CronJob('00 00 04 * * *', () => {
+    GetMatches();
   });
-  // run on bot start if channel is empty (aka bot needs to check if it's run today)
-  CheckIfBotHasRun(channel);
   scheduledEvent.start();
 });
+
+module.exports = {
+  name: 'getmatches',
+  description: 'Populates the matches channel',
+  type: 1,
+  options: [],
+  permissions: {
+    DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
+  },
+  run: async (client, interaction, config, db) => {
+    GetMatches();
+    return interaction.reply({
+      content: 'Getting matches...',
+      ephemeral: true
+    });
+  },
+};
