@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const guild = require('../../../config/guild');
 
 module.exports = {
   name: 'clearmatches',
@@ -13,10 +13,10 @@ module.exports = {
     const messageManager = channel.messages;
     const messages = await messageManager.channel.messages.fetch({ limit: 100 });
     channel.bulkDelete(messages, true);
-  
+
     return interaction.reply({
       content: 'Cleared!',
-      ephemeral: true
+      ephemeral: true,
     });
   },
 };

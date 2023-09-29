@@ -35,7 +35,7 @@ function SplitMatchStrings(allMatches) {
     if (i % 4 === 0) {
       const tl = allMatches[i].trim();
       const mf = allMatches[i + 1].replace(/[vs()]/g, '').slice(-3);
-      
+
       // stops building objects once reaching completed matches (2:1, 0:3, etc.)
       if (!(mf.startsWith('Bo') || mf === '')) { break; }
       const tr = allMatches[i + 2].trim();
@@ -124,11 +124,11 @@ module.exports = {
   permissions: {
     DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
   },
-  run: async (client, interaction, config, db) => {
+  run: async (interaction, config, db) => {
     GetMatches();
     return interaction.reply({
       content: 'Getting matches...',
-      ephemeral: true
+      ephemeral: true,
     });
   },
 };
