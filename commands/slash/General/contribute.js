@@ -11,7 +11,7 @@ module.exports = {
   run: async (client, interaction, config, db) => interaction.reply({
     embeds: [
       new EmbedBuilder()
-        .setDescription('Make me better please :-) https://github.com/ryelo/froggy')
+        .setDescription('Make me better please :-) https://github.com/FrogginPad/froggy')
         .setColor('Green'),
     ],
     ephemeral: false,

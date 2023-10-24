@@ -39,9 +39,9 @@
     "url": "git@github.com:ryelo/froggy.git"
   },
   "bugs": {
-    "url": "https://github.com/ryelo/froggy/issues"
+    "url": "https://github.com/FrogginPad/froggy/issues"
   },
-  "homepage": "https://github.com/ryelo/froggy/blob/main/README.md",
+  "homepage": "https://github.com/FrogginPad/froggy/blob/main/README.md",
   "devDependencies": {
     "eslint": "^8.29.0",
     "eslint-config-airbnb-base": "^15.0.0",

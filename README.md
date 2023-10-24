@@ -6,15 +6,15 @@ Discord.js Documentation is linked [here](https://discord.js.org/#/docs/discord.
 
 ## Project Features
 
-* Prefix commands
-* Slash commands
-* User commands
-* Message commands
-* Modals handler
+- Prefix commands
+- Slash commands
+- User commands
+- Message commands
+- Modals handler
 
 ## How to setup
 
-More info can be found in the [setup docs](https://github.com/ryelo/froggy/tree/main/docs/setup.md)
+More info can be found in the [setup docs](https://github.com/FrogginPad/froggy/tree/main/docs/setup.md)
 
 ## Requirements
 
