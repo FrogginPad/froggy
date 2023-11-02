@@ -124,7 +124,7 @@ module.exports = {
   permissions: {
     DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
   },
-  run: async (client, interaction, config, db) => {
+  run: async (runClient, interaction, config, db) => {
     GetMatches();
     return interaction.reply({
       content: 'Getting matches...',
