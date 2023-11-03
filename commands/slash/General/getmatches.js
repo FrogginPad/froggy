@@ -61,9 +61,9 @@ async function MatchBuilder(matchData, tourneyData) {
   const today = new Date();
 
   // filter matches down to featured tournies and same day
-  // reduce duplicates (ty liquipedia)
+  // trim tourney strings to everything before ' - ' in cases of group/swiss/etc. stages
   return matchArr
-    .filter((match) => tourneyData.includes(match.tourney)
+    .filter((match) => tourneyData.includes(match.tourney.split(' - ')[0])
       && MatchIsWithin24Hours(today, match.matchTime))
     .reduce((unique, o) => {
       if (!unique.some((obj) => obj.teamleft === o.teamleft && obj.teamright === o.teamright && obj.matchTime.toString() === o.matchTime.toString())) {
@@ -124,7 +124,7 @@ module.exports = {
   permissions: {
     DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
   },
-  run: async (interaction, config, db) => {
+  run: async (runClient, interaction, config, db) => {
     GetMatches();
     return interaction.reply({
       content: 'Getting matches...',
