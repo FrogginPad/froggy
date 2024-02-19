@@ -11,8 +11,9 @@ const liquipediaIsBad = [
   'VCT 2024: Pacific Kickoff',
   'VCT 2024: Americas Kickoff',
   'VCT 2024: EMEA Kickoff',
-  'VCT 2024: China Kickoff'
+  'VCT 2024: China Kickoff',
 ];
+const blacklist = 'VCL';
 
 function SplitTourneyStrings(tourneyArr) {
   return tourneyArr.split('\n').filter((item) => item !== '');
@@ -35,7 +36,8 @@ function TourneyBuilder(data) {
   liquipediaIsBad.forEach((item) => {
     tourneyArr.push(item);
   });
-  return tourneyArr;
+  const filterTourneyArr = tourneyArr.filter((item) => !item.includes(blacklist));
+  return filterTourneyArr;
 }
 
 function SplitMatchStrings(allMatches) {
