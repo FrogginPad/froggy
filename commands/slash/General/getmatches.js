@@ -7,6 +7,12 @@ const guild = require('../../../config/guild');
 
 const tourneyLink = 'https://liquipedia.net/valorant/Liquipedia:Tournaments';
 const matchLink = 'https://liquipedia.net/valorant/Liquipedia:Matches';
+const liquipediaIsBad = [
+  'VCT 2024: Pacific Kickoff',
+  'VCT 2024: Americas Kickoff',
+  'VCT 2024: EMEA Kickoff',
+  'VCT 2024: China Kickoff'
+];
 
 function SplitTourneyStrings(tourneyArr) {
   return tourneyArr.split('\n').filter((item) => item !== '');
@@ -25,6 +31,9 @@ function TourneyBuilder(data) {
   });
   ongoingTournies.forEach((item) => {
     tourneyArr.push(item.split('|')[1].trim());
+  });
+  liquipediaIsBad.forEach((item) => {
+    tourneyArr.push(item);
   });
   return tourneyArr;
 }
