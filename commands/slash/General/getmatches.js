@@ -18,7 +18,7 @@ const VCTNA = [
   '100T',
   'EG',
   'G2',
-  'KRÜ'
+  'KRÜ',
 ];
 const VCTEU = [
   'TH',
@@ -31,7 +31,7 @@ const VCTEU = [
   'BBL',
   'FNC',
   'VIT',
-  'M8'
+  'M8',
 ];
 const VCTPA = [
   'T1',
@@ -44,7 +44,7 @@ const VCTPA = [
   'DFM',
   'PRX',
   'GEN',
-  'RRQ'
+  'RRQ',
 ];
 const VCTCN = [
   'TE',
@@ -57,7 +57,7 @@ const VCTCN = [
   'AG',
   'EDG',
   'BLG',
-  'WOL'
+  'WOL',
 ];
 const VCTList = VCTNA.concat(VCTEU).concat(VCTPA).concat(VCTCN);
 
@@ -73,10 +73,10 @@ function SplitMatchStrings(allMatches) {
       const tr = allMatches[i + 2].trim();
       const time = new Date(allMatches[i + 3].split(' UTC')[0].replace(' -', '').concat(' UTC'));
       const tour = allMatches[i + 3].split(' UTC')[1];
-      if (VCTList.includes(tl) || VCTList.includes(tr)){
+      if (VCTList.includes(tl) || VCTList.includes(tr)) {
         matchArr.push({
           teamleft: tl, matchFormat: mf, teamright: tr, matchTime: time, tourney: tour,
-        });  
+        });
       }
     }
   }
