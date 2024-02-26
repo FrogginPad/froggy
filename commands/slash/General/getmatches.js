@@ -7,38 +7,59 @@ const guild = require('../../../config/guild');
 
 const tourneyLink = 'https://liquipedia.net/valorant/Liquipedia:Tournaments';
 const matchLink = 'https://liquipedia.net/valorant/Liquipedia:Matches';
-const liquipediaIsBad = [
-  'VCT 2024: Pacific Kickoff',
-  'VCT 2024: Americas Kickoff',
-  'VCT 2024: EMEA Kickoff',
-  'VCT 2024: China Kickoff',
+const VCTNA = [
+  'NRG',
+  'MIBR',
+  'C9',
+  'FUR',
+  'LOUD',
+  'LEV',
+  'SEN',
+  '100T',
+  'EG',
+  'G2',
+  'KRÜ',
 ];
-const blacklist = 'VCL';
-
-function SplitTourneyStrings(tourneyArr) {
-  return tourneyArr.split('\n').filter((item) => item !== '');
-}
-
-// returns an list containing the strings of both ongoing and upcoming tournies
-function TourneyBuilder(data) {
-  const $ = cheerio.load(data);
-  const allTournies = $('#bodyContent').text().split('Completed')[0].split('Upcoming')[1].split('Ongoing');
-  const upcomingTournies = SplitTourneyStrings(allTournies[0]);
-  const ongoingTournies = SplitTourneyStrings(allTournies[1]);
-  const tourneyArr = [];
-
-  upcomingTournies.forEach((item) => {
-    tourneyArr.push(item.split('|')[1].trim());
-  });
-  ongoingTournies.forEach((item) => {
-    tourneyArr.push(item.split('|')[1].trim());
-  });
-  liquipediaIsBad.forEach((item) => {
-    tourneyArr.push(item);
-  });
-  const filterTourneyArr = tourneyArr.filter((item) => !item.includes(blacklist));
-  return filterTourneyArr;
-}
+const VCTEU = [
+  'TH',
+  'KC',
+  'FUT',
+  'GX',
+  'NAVI',
+  'KOI',
+  'TL',
+  'BBL',
+  'FNC',
+  'VIT',
+  'M8',
+];
+const VCTPA = [
+  'T1',
+  'ZETA',
+  'GE',
+  'BLD',
+  'DRX',
+  'TS',
+  'TLN',
+  'DFM',
+  'PRX',
+  'GEN',
+  'RRQ',
+];
+const VCTCN = [
+  'TE',
+  'TYL',
+  'FPX',
+  'NV',
+  'JDG',
+  'TEC',
+  'DRG',
+  'AG',
+  'EDG',
+  'BLG',
+  'WOL',
+];
+const VCTList = VCTNA.concat(VCTEU).concat(VCTPA).concat(VCTCN);
 
 function SplitMatchStrings(allMatches) {
   const matchArr = [];
@@ -52,9 +73,11 @@ function SplitMatchStrings(allMatches) {
       const tr = allMatches[i + 2].trim();
       const time = new Date(allMatches[i + 3].split(' UTC')[0].replace(' -', '').concat(' UTC'));
       const tour = allMatches[i + 3].split(' UTC')[1];
-      matchArr.push({
-        teamleft: tl, matchFormat: mf, teamright: tr, matchTime: time, tourney: tour,
-      });
+      if (VCTList.includes(tl) || VCTList.includes(tr)) {
+        matchArr.push({
+          teamleft: tl, matchFormat: mf, teamright: tr, matchTime: time, tourney: tour,
+        });
+      }
     }
   }
   return matchArr;
@@ -65,7 +88,7 @@ function MatchIsWithin24Hours(today, matchTime) {
 }
 
 // returns a list of featured matches that occur within 24 hours of the job
-async function MatchBuilder(matchData, tourneyData) {
+async function MatchBuilder(matchData) {
   const $ = cheerio.load(matchData);
   const allMatches = $('table.wikitable.wikitable-striped.infobox_matches_content').text().split('\n').filter((item) => item !== '');
   const matchArr = SplitMatchStrings(allMatches);
@@ -74,8 +97,7 @@ async function MatchBuilder(matchData, tourneyData) {
   // filter matches down to featured tournies and same day
   // trim tourney strings to everything before ' - ' in cases of group/swiss/etc. stages
   return matchArr
-    .filter((match) => tourneyData.includes(match.tourney.split(' - ')[0])
-      && MatchIsWithin24Hours(today, match.matchTime))
+    .filter((match) => MatchIsWithin24Hours(today, match.matchTime))
     .reduce((unique, o) => {
       if (!unique.some((obj) => obj.teamleft === o.teamleft && obj.teamright === o.teamright && obj.matchTime.toString() === o.matchTime.toString())) {
         unique.push(o);
@@ -92,24 +114,22 @@ async function ClearChat(channel) {
 }
 
 function MessageBuilder(channel) {
-  axios.get(tourneyLink).then((tourneyResp) => {
-    axios.get(matchLink).then(async (matchResp) => {
-      const matchArr = await MatchBuilder(matchResp.data, TourneyBuilder(tourneyResp.data));
-      if (matchArr.length > 0) {
-        channel.setTopic('Here are the upcoming featured matches today.');
-        matchArr.forEach((match) => {
-          channel.send({
-            embeds: [new EmbedBuilder()
-              .setColor('Green')
-              .setTitle(`${match.teamleft} vs. ${match.teamright}`)
-              .setDescription(`<t:${Date.parse(match.matchTime) / 1000}:F>\n${match.tourney}`),
-            ],
-          });
+  axios.get(matchLink).then(async (matchResp) => {
+    const matchArr = await MatchBuilder(matchResp.data);
+    if (matchArr.length > 0) {
+      channel.setTopic('Here are the upcoming featured matches today.');
+      matchArr.forEach((match) => {
+        channel.send({
+          embeds: [new EmbedBuilder()
+            .setColor('Green')
+            .setTitle(`${match.teamleft} vs. ${match.teamright}`)
+            .setDescription(`<t:${Date.parse(match.matchTime) / 1000}:F>\n${match.tourney}`),
+          ],
         });
-      } else {
-        channel.setTopic('There are no featured matches today :(');
-      }
-    });
+      });
+    } else {
+      channel.setTopic('There are no featured matches today :(');
+    }
   });
 }
 
