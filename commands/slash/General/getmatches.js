@@ -66,34 +66,27 @@ function convertTimeToDatetime(matchTime) {
   return `${today}T${time}Z`;
 }
 
-function SplitMatches(allMatches) {
+function MatchIsWithin24Hours(eta) {
+  return !eta.includes('d') && !eta.includes('w');
+}
+
+async function SplitMatches(allMatches) {
   const matchArr = [];
   for (let i = 0; i < allMatches.length; i++) {
     const tl = allMatches[i].team_one_name;
     const tr = allMatches[i].team_two_name;
     const time = allMatches[i].match_time;
     const tour = allMatches[i].event_name;
-    const cd = allMatches[i].eta;
+    const countdown = allMatches[i].eta;
 
     // T1 teams only
-    if (VCTList.includes(tl) || VCTList.includes(tr)) {
+    if ((VCTList.includes(tl) || VCTList.includes(tr)) && MatchIsWithin24Hours(countdown)) {
       matchArr.push({
-        teamleft: tl, teamright: tr, matchTime: convertTimeToDatetime(time), tourney: tour, eta: cd,
+        teamleft: tl, teamright: tr, matchTime: convertTimeToDatetime(time), tourney: tour,
       });
     }
   }
   return matchArr;
-}
-
-function MatchIsWithin24Hours(eta) {
-  return !eta.includes('d') && !eta.includes('w');
-}
-
-// returns a list of featured matches that occur within 24 hours of the job
-async function MatchBuilder(matchData) {
-  const matchArr = SplitMatches(matchData);
-  return matchArr
-    .filter((match) => MatchIsWithin24Hours(match.eta));
 }
 
 // clear channel of previous day's messages
@@ -105,7 +98,7 @@ async function ClearChat(channel) {
 
 function MessageBuilder(channel) {
   axios.get(matchLink).then(async (matchResp) => {
-    const matchArr = await MatchBuilder(matchResp.data.matches);
+    const matchArr = await SplitMatches(matchResp.data.matches);
     if (matchArr.length > 0) {
       channel.setTopic('Here are the upcoming featured matches today.');
       matchArr.forEach((match) => {
