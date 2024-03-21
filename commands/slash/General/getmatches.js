@@ -1,109 +1,99 @@
 const { EmbedBuilder } = require('discord.js');
 const axios = require('axios');
-const cheerio = require('cheerio');
+const moment = require('moment');
 const cron = require('cron');
 const client = require('../../../index');
 const guild = require('../../../config/guild');
 
-const tourneyLink = 'https://liquipedia.net/valorant/Liquipedia:Tournaments';
-const matchLink = 'https://liquipedia.net/valorant/Liquipedia:Matches';
+const matchLink = 'https://vlrgg.cyclic.app/api/matches/upcoming';
 const VCTNA = [
-  'NRG',
+  'NRG Esports',
   'MIBR',
-  'C9',
-  'FUR',
+  'Cloud9',
+  'FURIA',
   'LOUD',
-  'LEV',
-  'SEN',
-  '100T',
-  'EG',
-  'G2',
-  'KRÜ',
+  'Leviatán',
+  'Sentinels',
+  '100 Thieves',
+  'Evil Geniuses',
+  'G2 Esports',
+  'KRÜ Esports',
 ];
 const VCTEU = [
-  'TH',
-  'KC',
-  'FUT',
-  'GX',
-  'NAVI',
+  'Team Heretics',
+  'Karmine Corp',
+  'FUT Esports',
+  'GIANTX',
+  'Natus Vincere',
   'KOI',
-  'TL',
-  'BBL',
-  'FNC',
-  'VIT',
-  'M8',
+  'Team Liquid',
+  'BBL Esports',
+  'FNATIC',
+  'Team Vitality',
+  'Gentle Mates',
 ];
 const VCTPA = [
   'T1',
-  'ZETA',
-  'GE',
-  'BLD',
+  'ZETA DIVISION',
+  'Global Esports',
+  'BLEED',
   'DRX',
-  'TS',
-  'TLN',
-  'DFM',
-  'PRX',
-  'GEN',
-  'RRQ',
+  'Team Secret',
+  'Talon Esports',
+  'DetonatioN FocusMe',
+  'Paper Rex',
+  'Gen.G',
+  'Rex Regum Qeon',
 ];
 const VCTCN = [
-  'TE',
-  'TYL',
-  'FPX',
-  'NV',
-  'JDG',
-  'TEC',
-  'DRG',
-  'AG',
-  'EDG',
-  'BLG',
-  'WOL',
+  'Trace Esports',
+  'TYLOO',
+  'FunPlus Phoenix',
+  'Nova Esports',
+  'JD Gaming',
+  'Titan Esports Club',
+  'Dragon Ranger Gaming',
+  'All Gamers',
+  'EDward Gaming',
+  'Bilibili Gaming',
+  'Wolves Esports',
 ];
 const VCTList = VCTNA.concat(VCTEU).concat(VCTPA).concat(VCTCN);
 
-function SplitMatchStrings(allMatches) {
+function convertTimeToDatetime(matchTime) {
+  const today = new Date().toISOString().slice(0, 10);
+  const time = moment(matchTime, ['h:mm A']).format('HH:mm:ss');
+  return `${today}T${time}Z`;
+}
+
+function SplitMatches(allMatches) {
   const matchArr = [];
   for (let i = 0; i < allMatches.length; i++) {
-    if (i % 4 === 0) {
-      const tl = allMatches[i].trim();
-      const mf = allMatches[i + 1].replace(/[vs()]/g, '').slice(-3);
+    const tl = allMatches[i].team_one_name;
+    const tr = allMatches[i].team_two_name;
+    const time = allMatches[i].match_time;
+    const tour = allMatches[i].event_name;
+    const cd = allMatches[i].eta;
 
-      // stops building objects once reaching completed matches (2:1, 0:3, etc.)
-      if (!(mf.startsWith('Bo') || mf === '')) { break; }
-      const tr = allMatches[i + 2].trim();
-      const time = new Date(allMatches[i + 3].split(' UTC')[0].replace(' -', '').concat(' UTC'));
-      const tour = allMatches[i + 3].split(' UTC')[1];
-      if (VCTList.includes(tl) || VCTList.includes(tr)) {
-        matchArr.push({
-          teamleft: tl, matchFormat: mf, teamright: tr, matchTime: time, tourney: tour,
-        });
-      }
+    // T1 teams only
+    if (VCTList.includes(tl) || VCTList.includes(tr)) {
+      matchArr.push({
+        teamleft: tl, teamright: tr, matchTime: convertTimeToDatetime(time), tourney: tour, eta: cd,
+      });
     }
   }
   return matchArr;
 }
 
-function MatchIsWithin24Hours(today, matchTime) {
-  return matchTime.getTime() < today.getTime() + (24 * 60 * 60 * 1000);
+function MatchIsWithin24Hours(eta) {
+  return !eta.includes('d') && !eta.includes('w');
 }
 
 // returns a list of featured matches that occur within 24 hours of the job
 async function MatchBuilder(matchData) {
-  const $ = cheerio.load(matchData);
-  const allMatches = $('table.wikitable.wikitable-striped.infobox_matches_content').text().split('\n').filter((item) => item !== '');
-  const matchArr = SplitMatchStrings(allMatches);
-  const today = new Date();
-
-  // filter matches down to featured tournies and same day
-  // trim tourney strings to everything before ' - ' in cases of group/swiss/etc. stages
+  const matchArr = SplitMatches(matchData);
   return matchArr
-    .filter((match) => MatchIsWithin24Hours(today, match.matchTime))
-    .reduce((unique, o) => {
-      if (!unique.some((obj) => obj.teamleft === o.teamleft && obj.teamright === o.teamright && obj.matchTime.toString() === o.matchTime.toString())) {
-        unique.push(o);
-      }
-      return unique;
-    }, []);
+    .filter((match) => MatchIsWithin24Hours(match.eta));
 }
 
 // clear channel of previous day's messages
@@ -115,7 +105,7 @@ async function ClearChat(channel) {
 
 function MessageBuilder(channel) {
   axios.get(matchLink).then(async (matchResp) => {
-    const matchArr = await MatchBuilder(matchResp.data);
+    const matchArr = await MatchBuilder(matchResp.data.matches);
     if (matchArr.length > 0) {
       channel.setTopic('Here are the upcoming featured matches today.');
       matchArr.forEach((match) => {
