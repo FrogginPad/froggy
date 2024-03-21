@@ -60,6 +60,12 @@ const VCTCN = [
 ];
 const VCTList = VCTNA.concat(VCTEU).concat(VCTPA).concat(VCTCN);
 
+function convertTimeToDatetime(matchTime) {
+  const today = new Date().toISOString().slice(0, 10);
+  const time = moment(matchTime, ['h:mm A']).format('HH:mm:ss');
+  return `${today}T${time}Z`;
+}
+
 function SplitMatches(allMatches) {
   const matchArr = [];
   for (let i = 0; i < allMatches.length; i++) {
@@ -69,7 +75,7 @@ function SplitMatches(allMatches) {
     const tour = allMatches[i].event_name;
     const cd = allMatches[i].eta;
 
-    //T1 teams only
+    // T1 teams only
     if (VCTList.includes(tl) || VCTList.includes(tr)) {
       matchArr.push({
         teamleft: tl, teamright: tr, matchTime: convertTimeToDatetime(time), tourney: tour, eta: cd,
@@ -97,12 +103,6 @@ async function ClearChat(channel) {
   channel.bulkDelete(messages, true);
 }
 
-function convertTimeToDatetime(matchTime) {
-  const today = new Date().toISOString().slice(0, 10)
-  const time = moment(matchTime, ["h:mm A"]).format("HH:mm:ss");
-  return today + 'T' + time + 'Z';
-}
-
 function MessageBuilder(channel) {
   axios.get(matchLink).then(async (matchResp) => {
     const matchArr = await MatchBuilder(matchResp.data.matches);
@@ -113,7 +113,7 @@ function MessageBuilder(channel) {
           embeds: [new EmbedBuilder()
             .setColor('Green')
             .setTitle(`${match.teamleft} vs. ${match.teamright}`)
-            .setDescription(`<t:${Date.parse(match.matchTime)/1000}:F>\n${match.tourney}`),
+            .setDescription(`<t:${Date.parse(match.matchTime) / 1000}:F>\n${match.tourney}`),
           ],
         });
       });
