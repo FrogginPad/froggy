@@ -59,6 +59,7 @@ const VCTCN = [
   'Wolves Esports',
 ];
 const VCTList = VCTNA.concat(VCTEU).concat(VCTPA).concat(VCTCN);
+const DSTOffset = 3600;
 
 function convertTimeToDatetime(matchTime) {
   const today = new Date().toISOString().slice(0, 10);
@@ -106,7 +107,7 @@ function MessageBuilder(channel) {
           embeds: [new EmbedBuilder()
             .setColor('Green')
             .setTitle(`${match.teamleft} vs. ${match.teamright}`)
-            .setDescription(`<t:${Date.parse(match.matchTime) / 1000}:F>\n${match.tourney}`),
+            .setDescription(`<t:${(Date.parse(match.matchTime) / 1000) - DSTOffset}:F>\n${match.tourney}`),
           ],
         });
       });
