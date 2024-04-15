@@ -7,24 +7,6 @@ const statusText = {
   incidents: '🚨 Incidents',
 };
 
-const severityText = {
-  warning: '⚠️ Warning',
-  info: 'ℹ️ Info',
-  critical: '🚨 Critical',
-};
-
-// const generateValStatusText = (data) => {
-//   if (data.status === 'success') { return statusText.success; }
-
-//   if (data.status === 'maintenances') {
-//     return `${statusText.maintenances}\n${data.title}\n Status: ${data.maintenance_status}`;
-//   }
-
-//   if (data.status === 'incidents') {
-//     return `${severityText[data.severity]}\n${data.title}`;
-//   }
-// };
-
 module.exports = {
   config: {
     name: 'status',
