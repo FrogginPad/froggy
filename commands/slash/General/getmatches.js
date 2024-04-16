@@ -4,8 +4,11 @@ const moment = require('moment');
 const cron = require('cron');
 const client = require('../../../index');
 const guild = require('../../../config/guild');
+require('dotenv').config();
 
-const matchLink = 'https://vlrgg.cyclic.app/api/matches/upcoming';
+const { API_URL } = process.env;
+const matchLink = `${API_URL}/v1/vlr/matches/upcoming`;
+
 const VCTNA = [
   'NRG Esports',
   'MIBR',

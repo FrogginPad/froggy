@@ -2,7 +2,9 @@
 
 1. Install [Visual Studio Code](https://code.visualstudio.com/Download)
 2. Install [Node.js](https://nodejs.org/en/download/) (Required: v^16.9.0)
-3. Clone the project `git clone git@github.com:ryelo/froggy.git`
+3. Clone
+  a. this project `git clone git@github.com:FrogginPad/froggy.git`
+  b. tadpole (api) `git clone git@github.com:FrogginPad/tadpole.git`
 4. [Set up the bot + permissions](https://github.com/FrogginPad/froggy/tree/main/docs/createBot.md)
 5. Go to `config/config.js` and change all the values:
 
@@ -24,6 +26,7 @@
    CLIENT_ID= // Client ID for token
    GUILD_ID= // ID for discord server (enable with dev mode in discord, right click server name -> copy token)
    MONGO= // Mongo DB token if needed
+   API_URL= // Tadpole (api url)
    ```
 
 7. Go to `config/guild.example.js` and change all the values and rename to `guild.js` (keep file inside `config` directory)
@@ -40,6 +43,6 @@
    };
    ```
 
-8. Type in the terminal: `npm install`
-9. Type in the terminal: `npm start`
+8. Install dependencies and run froggy `npm install && npm run start`
+9. [Install dependencies and run tadpole](https://github.com/FrogginPad/tadpole?tab=readme-ov-file#setup)
 10. Run a command `!uptime` in your discord server

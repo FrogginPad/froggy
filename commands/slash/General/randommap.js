@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const consts = require('../../consts/consts');
+const randommap = require('../../../functions/randommap');
 
 module.exports = {
   name: 'randommap',
@@ -10,11 +10,12 @@ module.exports = {
     DEFAULT_MEMBER_PERMISSIONS: 'SendMessages',
   },
   run: async (client, interaction, config, db) => {
-    const map = consts.MAPS[Math.floor(Math.random() * consts.MAPS.length)];
+    const res = await randommap();
+
     return interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setDescription(`${map}`)
+          .setDescription(`${res.data.rotation}`)
           .setColor('Green'),
       ],
       ephemeral: false,
