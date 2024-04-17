@@ -66,11 +66,11 @@ const VCTList = VCTNA.concat(VCTEU).concat(VCTPA).concat(VCTCN);
 function convertTimeToDatetime(matchTime) {
   const today = new Date().toISOString().slice(0, 10);
   const time = moment(matchTime, ['h:mm A']).format('HH:mm:ss');
-  return `${today}T${time}Z`;
+  return `${today}T${time}`;
 }
 
 function MatchIsWithin24Hours(eta) {
-  return !eta.includes('d') && !eta.includes('w');
+  return !eta.includes('d') && !eta.includes('w') && eta !== '';
 }
 
 async function SplitMatches(allMatches) {
@@ -92,6 +92,16 @@ async function SplitMatches(allMatches) {
   return matchArr;
 }
 
+function removeDupes(matchArr) {
+  const result = matchArr.reduce((unique, o) => {
+    if (!unique.some((obj) => obj.teamleft === o.teamleft && obj.teamright === o.teamright && obj.matchTime === o.matchTime)) {
+      unique.push(o);
+    }
+    return unique;
+  }, []);
+  return result;
+}
+
 // clear channel of previous day's messages
 async function ClearChat(channel) {
   const messageManager = channel.messages;
@@ -102,9 +112,10 @@ async function ClearChat(channel) {
 function MessageBuilder(channel) {
   axios.get(matchLink).then(async (matchResp) => {
     const matchArr = await SplitMatches(matchResp.data.matches);
-    if (matchArr.length > 0) {
+    const uniqueArr = removeDupes(matchArr);
+    if (uniqueArr.length > 0) {
       channel.setTopic('Here are the upcoming featured matches today.');
-      matchArr.forEach((match) => {
+      uniqueArr.forEach((match) => {
         channel.send({
           embeds: [new EmbedBuilder()
             .setColor('Green')
