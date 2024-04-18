@@ -7,7 +7,7 @@ const guild = require('../../../config/guild');
 require('dotenv').config();
 
 const { API_URL } = process.env;
-const matchLink = 'https://api.froggin.gg/v1/vlr/matches/upcoming';
+const matchLink = '${API_URL}/v1/vlr/matches/upcoming';
 
 const VCTNA = [
   'NRG Esports',
