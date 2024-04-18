@@ -7,7 +7,7 @@ const guild = require('../../../config/guild');
 require('dotenv').config();
 
 const { API_URL } = process.env;
-const matchLink = `${API_URL}/v1/vlr/matches/upcoming`;
+const matchLink = 'https://api.froggin.gg/v1/vlr/matches/upcoming';
 
 const VCTNA = [
   'NRG Esports',
@@ -63,10 +63,26 @@ const VCTCN = [
 ];
 const VCTList = VCTNA.concat(VCTEU).concat(VCTPA).concat(VCTCN);
 
-function convertTimeToDatetime(matchTime) {
-  const today = new Date().toISOString().slice(0, 10);
-  const time = moment(matchTime, ['h:mm A']).format('HH:mm:ss');
-  return `${today}T${time}`;
+function isToday(timeUntilMidnight, timeUntilMatch) {
+  let today = true;
+  if (timeUntilMatch > timeUntilMidnight) { today = false; }
+  return today;
+}
+
+function convertTimeToDatetime(matchTime, countdown) {
+  const todayDate = new Date().toISOString().slice(0, 10);
+  const midnightDate = `${todayDate}T11:59:59`;
+  const timeUntilMidnight = moment.duration(moment(midnightDate)).as('milliseconds') - moment.duration(moment(todayDate)).as('milliseconds');
+  const etaTime = moment(countdown, ['h:mm A']).format('HH:mm:ss');
+  const timeUntilMatch = moment.duration(etaTime).as('milliseconds');
+  const todayBool = isToday(timeUntilMidnight, timeUntilMatch);
+  const tomorrowDate = new Date(+new Date() + 86400000).toISOString().slice(0, 10);
+  const matchtime = moment(matchTime, ['h:mm A']).format('HH:mm:ss');
+
+  if (!todayBool) {
+    return `${tomorrowDate}T${matchtime}`;
+  }
+  return `${todayDate}T${matchtime}`;
 }
 
 function MatchIsWithin24Hours(eta) {
@@ -85,7 +101,7 @@ async function SplitMatches(allMatches) {
     // T1 teams only
     if ((VCTList.includes(tl) || VCTList.includes(tr)) && MatchIsWithin24Hours(countdown)) {
       matchArr.push({
-        teamleft: tl, teamright: tr, matchTime: convertTimeToDatetime(time), tourney: tour,
+        teamleft: tl, teamright: tr, matchTime: convertTimeToDatetime(time, countdown), tourney: tour,
       });
     }
   }
@@ -94,7 +110,7 @@ async function SplitMatches(allMatches) {
 
 function removeDupes(matchArr) {
   const result = matchArr.reduce((unique, o) => {
-    if (!unique.some((obj) => obj.teamleft === o.teamleft && obj.teamright === o.teamright && obj.matchTime === o.matchTime)) {
+    if (!unique.some((obj) => obj.team_one_name === o.team_one_name && obj.team_two_name === o.team_two_name && obj.match_time === o.match_time)) {
       unique.push(o);
     }
     return unique;
@@ -111,11 +127,10 @@ async function ClearChat(channel) {
 
 function MessageBuilder(channel) {
   axios.get(matchLink).then(async (matchResp) => {
-    const matchArr = await SplitMatches(matchResp.data.matches);
-    const uniqueArr = removeDupes(matchArr);
-    if (uniqueArr.length > 0) {
+    const matchArr = await SplitMatches(removeDupes(matchResp.data.matches));
+    if (matchArr.length > 0) {
       channel.setTopic('Here are the upcoming featured matches today.');
-      uniqueArr.forEach((match) => {
+      matchArr.forEach((match) => {
         channel.send({
           embeds: [new EmbedBuilder()
             .setColor('Green')
