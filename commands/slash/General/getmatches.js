@@ -7,7 +7,7 @@ const guild = require('../../../config/guild');
 require('dotenv').config();
 
 const { API_URL } = process.env;
-const matchLink = `${API_URL}/v1/vlr/matches/upcoming`;
+const matchLink = `${API_URL}/v1/vlr/matches/today`;
 
 const VCTNA = [
   'NRG Esports',
@@ -136,7 +136,7 @@ function GetMatches() {
   MessageBuilder(channel);
 }
 
-// runs once a day at specified time 'SS MM HH' - 04:00 default
+// runs once a day at specified time 'SS MM HH' - 00:01 (midnight:01) default
 client.once('ready', () => {
   const scheduledEvent = new cron.CronJob('00 01 00 * * *', () => {
     GetMatches();
