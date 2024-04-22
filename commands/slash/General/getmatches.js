@@ -138,7 +138,7 @@ function GetMatches() {
 
 // runs once a day at specified time 'SS MM HH' - 04:00 default
 client.once('ready', () => {
-  const scheduledEvent = new cron.CronJob('00 00 04 * * *', () => {
+  const scheduledEvent = new cron.CronJob('00 01 00 * * *', () => {
     GetMatches();
   });
   scheduledEvent.start();
