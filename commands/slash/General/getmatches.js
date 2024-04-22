@@ -7,7 +7,7 @@ const guild = require('../../../config/guild');
 require('dotenv').config();
 
 const { API_URL } = process.env;
-const matchLink = `${API_URL}/v1/vlr/matches/upcoming`;
+const matchLink = `${API_URL}/v1/vlr/matches/today`;
 
 const VCTNA = [
   'NRG Esports',
@@ -92,16 +92,6 @@ async function SplitMatches(allMatches) {
   return matchArr;
 }
 
-function removeDupes(matchArr) {
-  const result = matchArr.reduce((unique, o) => {
-    if (!unique.some((obj) => obj.teamleft === o.teamleft && obj.teamright === o.teamright && obj.matchTime === o.matchTime)) {
-      unique.push(o);
-    }
-    return unique;
-  }, []);
-  return result;
-}
-
 // clear channel of previous day's messages
 async function ClearChat(channel) {
   const messageManager = channel.messages;
@@ -112,10 +102,9 @@ async function ClearChat(channel) {
 function MessageBuilder(channel) {
   axios.get(matchLink).then(async (matchResp) => {
     const matchArr = await SplitMatches(matchResp.data.matches);
-    const uniqueArr = removeDupes(matchArr);
-    if (uniqueArr.length > 0) {
+    if (matchArr.length > 0) {
       channel.setTopic('Here are the upcoming featured matches today.');
-      uniqueArr.forEach((match) => {
+      matchArr.forEach((match) => {
         channel.send({
           embeds: [new EmbedBuilder()
             .setColor('Green')
@@ -136,7 +125,7 @@ function GetMatches() {
   MessageBuilder(channel);
 }
 
-// runs once a day at specified time 'SS MM HH' - 04:00 default
+// runs once a day at specified time 'SS MM HH' - 00:01 default
 client.once('ready', () => {
   const scheduledEvent = new cron.CronJob('00 01 00 * * *', () => {
     GetMatches();
