@@ -125,9 +125,9 @@ function GetMatches() {
   MessageBuilder(channel);
 }
 
-// runs once a day at specified time 'SS MM HH' - 00:01 default
+// runs once a day at specified time 'SS MM HH' - 02:00 default
 client.once('ready', () => {
-  const scheduledEvent = new cron.CronJob('00 01 00 * * *', () => {
+  const scheduledEvent = new cron.CronJob('00 00 02 * * *', () => {
     GetMatches();
   });
   scheduledEvent.start();
