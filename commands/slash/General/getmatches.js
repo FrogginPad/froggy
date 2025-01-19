@@ -21,6 +21,7 @@ const VCTNA = [
   'Evil Geniuses',
   'G2 Esports',
   'KRÜ Esports',
+  '2GAME Esports',
 ];
 const VCTEU = [
   'Team Heretics',
@@ -34,6 +35,7 @@ const VCTEU = [
   'FNATIC',
   'Team Vitality',
   'Gentle Mates',
+  'Apeks',
 ];
 const VCTPA = [
   'T1',
@@ -47,6 +49,8 @@ const VCTPA = [
   'Paper Rex',
   'Gen.G',
   'Rex Regum Qeon',
+  'BOOM Esports',
+  'Nongshim RedForce',
 ];
 const VCTCN = [
   'Trace Esports',
@@ -60,6 +64,7 @@ const VCTCN = [
   'EDward Gaming',
   'Bilibili Gaming',
   'Wolves Esports',
+  'XLG Esports',
 ];
 const VCTList = VCTNA.concat(VCTEU).concat(VCTPA).concat(VCTCN);
 
